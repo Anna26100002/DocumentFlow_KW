@@ -8,22 +8,22 @@
     <form asp-action="Index" asp-controller="Document">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Documents.Topic" class="control-label">Тема</label>
+            <label asp-for="Documents.Topic" class="control-label, font-weight-bold">Тема </label>
             <input type="text" asp-for="Documents.Topic" class="form-control" />
         </div>
         <div class="form-group">
+            <label asp-for="Documents.Executor" class="control-label, font-weight-bold">Исполнитель </label>
             <select asp-for="Documents.Executor" class="form-select">
-                Исполнитель
                 @{ int i = 1;
-                @foreach (var user in Model.Users) //Передаётся как NULL
-                @*@for (int i = 0; i < Model.Users.Count()-1; i++)*@
-                {
+                    @foreach (var user in Model.Users) //Передаётся как NULL
+                    @*@for (int i = 0; i < Model.Users.Count()-1; i++)*@
+                    {
                 <option value="i">@user.Fio</option>
                     i++;
                 }
-                    }
+                }
             </select>
-            @*<input type="text" asp-for="Executor" class="form-control" />*@
+            @*<input type="text" asp-for="Documents.Executor" class="form-control" />*@
 
         </div>
         @*<div class="form-floating">
@@ -36,20 +36,26 @@
                 <label for="floatingSelect">Работает с элементом выбора</label>
             </div>*@
         <div class="form-group">
-            <label asp-for="Documents.CreationDate" class="control-label">Дата начала</label>
-            <input type="number" asp-for="Documents.CreationDate" class="form-control" />
+            <label asp-for="Documents.CreationDate" class="control-label font-weight-bold">Дата начала</label>
+            <input type="datetime-local" asp-for="Documents.CreationDate" class="form-control" style="width: 200px;" />
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Priority" class="control-label">Приоритет</label>
-            <input type="text" asp-for="Documents.Priority" class="form-control" />
+            <label asp-for="Documents.Priority" class="control-label font-weight-bold">Приоритет<br /></label>
+            <select asp-for="Documents.Priority" class="form-select">
+                @*<label>Приоритет</label>*@
+                <option selected>Низкий</option>
+                <option value="1">Средний</option>
+                <option value="2">Высокий</option>
+                @*<input type="text" asp-for="Documents.Priority" class="form-control" />*@
+            </select>
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Type" class="control-label">Категория</label>
-            <input type="password" asp-for="Documents.Type" class="form-control" />
+            <label asp-for="Documents.Type" class="control-label font-weight-bold">Категория</label>
+            <input type="text" asp-for="Documents.Type" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Description" class="control-label" style="height: 100px">Описание</label>
-            <input type="password" asp-for="Documents.Description" class="form-control" />
+            <label asp-for="Documents.Description" class="control-label font-weight-bold">Описание</label>
+            <input type="text" asp-for="Documents.Description" class="form-control" style="height: 100px;" />
         </div>
         <div class="form-group">
             <input type="submit" value="Создать" class="btn btn-success" />
