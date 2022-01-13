@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DocumentFlow_KW.Models;
+@model IEnumerable<DocumentFlow_KW.Models.User>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+@*<div asp-action="isAdmin" asp-route-id="@Model." method="post">*@
+    <div class="mx-auto" style="padding: 3%">
+        <h1 class="h3 mb-3 fw-normal">Сотрудники компании</h1>
+        <a asp-action="Create"> Добавить пользователя </a>
+
+        <table class="table">
+            <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th></tr>
+
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td> @user.Fio </td>
+                    <td> @user.Position </td>
+                    <td> @user.Login </td>
+                    <td> @user.Year </td>
+                    <td>
+                        <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+
+                            <a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                            @*<a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Сменить пароль</a>*@
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Удалить
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    @*</div>*@

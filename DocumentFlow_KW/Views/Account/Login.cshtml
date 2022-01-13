@@ -1,0 +1,96 @@
+﻿@model DocumentFlow_KW.ViewModels.LoginViewModel
+
+<body class="text-center" style="justify-content: center; ">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand disabled" href="/Home/Start/">Документооборот</a>
+                <button class="navbar-toggler disabled" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active disabled" aria-current="page" href="/Profile/" disabled>Мой профиль</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="/Users/" disabled>Сотрудники компании</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" disabled>Послать сообщение</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" disabled>Создать задачу</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="/Home/Start/" disabled>Выход</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Поиск</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="m-5" style="padding: 5%; justify-content: center;">
+
+        <main class="form-signin" style="width: 300px; vertical-align: inherit; justify-content: center; margin: auto; " width="72" height="57">
+            <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
+                <div asp-validation-summary="ModelOnly"></div>
+                <img class="mb-4" src="/img/docs.png" alt="" width="72" height="75">
+
+                <h1 class="h3 mb-3 fw-normal">Вход в систему</h1>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" asp-for="Login">
+                    <label asp-for="Login"></label>
+                    <span asp-validation-for="Login"></span>
+                    @*<label for="floatingInput">Логин</label>*@
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" asp-for="Password">
+                    <label asp-for="Password"></label>
+                    <span asp-validation-for="Password"></span>
+                    @*<label for="floatingPassword">Пароль</label>*@
+                </div>
+
+                <div class="checkbox mb-3">
+                    <label asp-for="RememberMe"></label>
+                    @*<input type="checkbox" value="remember-me" asp-for="RememberMe">Запомнить*@
+                    @*</label>*@
+                    <input asp-for="RememberMe" />
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Вход</button>
+            </form>
+        </main>
+    </div>
+
+
+
+
+</body>
+    @*<h2>Вход в приложение</h2>
+    <form method="post" asp-controller="Account" asp-action="Login"
+          asp-route-returnUrl="@Model.ReturnUrl">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="Login"></label><br />
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="RememberMe"></label><br />
+            <input asp-for="RememberMe" />
+        </div>
+        <div>
+            <input type="submit" value="Войти" />
+        </div>
+    </form>*@
+

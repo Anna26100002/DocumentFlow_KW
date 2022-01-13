@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<!--<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+    @*<title>@ViewData["Title"] </title>*@
+    <!--<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>-->
+@*@{
+    ViewData["Title"] = "Home Page";
+}*@
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand disabled" href="/Home/Start/">Документооборот</a>
+                <button class="navbar-toggler disabled" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active disabled" aria-current="page" href="/Profile/" disabled>Мой профиль</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="/Users/" disabled>Сотрудники компании</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" disabled>Послать сообщение</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" disabled>Отправить на соглосование</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="/Home/Start/" disabled>Выход</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Поиск</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="m-5" style="top: 30px; padding: 5% 15%; margin: 2% 29%;">
+        <h1><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Добро пожаловать в систему электронного документооборота!</font></font></h1>
+        <h4><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Войдите или зарегистрируйтесь, чтобы начать работу в системе.</font></font></h4>
+        <p><a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Вход</font></font></a></p>
+        <p><a asp-controller="Account" asp-action="Register" class="btn btn-lg btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; padding: 5%;">Регистрация</font></font></a></p>
+    </div>
+    @*<a asp-controller="Account" asp-action="Login">Вход</a>
+        //Ссылка на вход
+        <a asp-controller="Account" asp-action="Register">Регистрация</a>*@
+</body>
+</html>

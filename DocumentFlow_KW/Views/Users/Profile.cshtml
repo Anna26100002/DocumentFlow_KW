@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DocumentFlow_KW.Models;
+@model DocumentFlow_KW.Models.User
+
+<link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
+
+<br>
+<br>
+<br>
+
+<style>
+    body {
+        background: url(https://bootstraptema.ru/images/bg/bg-1.png)
+    }
+
+    #main {
+        background-color: #f2f2f2;
+        padding: 20px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -ms-border-radius: 3px;
+        -o-border-radius: 3px;
+        border-radius: 3px;
+        border-bottom: 3px solid #ddd;
+    }
+
+    #real-estates-detail #author img {
+        -webkit-border-radius: 100%;
+        -moz-border-radius: 100%;
+        -ms-border-radius: 100%;
+        -o-border-radius: 100%;
+        border-radius: 100%;
+        border: 5px solid #ecf0f1;
+        margin-bottom: 10px;
+    }
+
+    #real-estates-detail .sosmed-author i.fa {
+        width: 30px;
+        height: 20px;
+        border: 2px solid #bdc3c7;
+        color: #bdc3c7;
+        padding-top: 6px;
+        margin-top: 10px;
+    }
+
+    .panel-default .panel-heading {
+        background-color: #fff;
+    }
+
+    #real-estates-detail .slides li img {
+        height: 450px;
+    }
+</style>
+
+
+<div class="container">
+    <div id="main">
+
+
+        <div class="row" id="real-estates-detail">
+            <div class="col-lg-4 col-md-4 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <header class="panel-title">
+                            <div class="text-center">
+                                <strong>Мой профиль</strong>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="panel-body">
+                        <div class="text-center" id="author">
+                            <img src="/img/profile3.jpg">
+                            <h3>@Model.Fio</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8 col-xs-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <ul id="myTab" class="nav nav-pills">
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade active in" id="detail">
+                                <h4>Мои данные</h4>
+                                <table class="table table-th-block">
+                                    <tbody>
+                                        <tr><td class="active">Должность:</td><td>@Model.Position</td></tr>
+                                        <tr><td class="active">Год рождения:</td><td>@Model.Year</td></tr>
+                                        <tr><td class="active">Логин:</td><td>@Model.Login</td></tr>
+                                    </tbody>
+                                </table>
+                                <a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px" asp-action="Edit" asp-route-id="@Model.Id">Изменить</a>
+                                <a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@Model.Id">Сменить пароль</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*@{
+    ViewBag.Title = "Мой профиль";
+}
+
+<div class="mx-auto" style="padding: 3%">
+    <h1 class="h3 mb-3 fw-normal">Мой профиль</h1>
+    <form asp-action="Profile" asp-controller="Users">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label>ФИО:&nbsp;&nbsp; </label>@Model.Fio
+            <label type="text" asp-for="@Model.Fio" />
+        </div>
+        <div class="form-group">
+            <label>Должность: &nbsp;&nbsp;</label>@Model.Position
+            <label type="text" asp-for="@Model.Position" />
+        </div>
+        <div class="form-group">
+            <label>Год рождения:&nbsp;&nbsp; </label>@Model.Year
+            <label type="number" asp-for="@Model.Year" />
+        </div>
+        <div class="form-group">
+            <label>Логин: &nbsp;&nbsp;</label>@Model.Login
+            <label type="text" asp-for="@Model.Login" />
+        </div>
+    </form>
+</div>*@

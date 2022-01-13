@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DocumentFlow_KW.Models;
+@*@model Tuple<DocumentFlow_KW.ViewModels.CreateUserViewModel, DocumentFlow_KW.ViewModels.ChangeRoleViewModel>*@
+@model IEnumerable<DocumentFlow_KW.Models.User>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+@*<div class="mx-auto" style="padding: 3%">*@
+    @*<h1 class="h3 mb-3 fw-normal">Сотрудники компании</h1>*@
+    @*@if (Model.Item2.UserRoles.Contains("admin")) {*@
+        @*<a asp-action = "Create" > Добавить пользователя </a >*@
+
+        @*<table class="table">*@
+        <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th></tr>
+
+        @foreach (var user in Model)
+        {
+        <tr >
+        <td > @user.Fio </td >
+        <td > @user.Position </td >
+        <td > @user.Login </td >
+        <td > @user.Year </td >
+        <td >
+            <form asp-action = "IsAdmin" asp-route-id = "@user.Id" method = "post">
+
+                @*<a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>*@
+@*<a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Сменить пароль</a>*@
+                @*<button type="submit" class="btn btn-sm btn-danger">
+                    Удалить
+                </button>*@
+            </form>
+    </td>
+    </tr>
+    }
+    @*</table>
+    </div>*@
+    @*}
+    else {
+<table class="table">
+    <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th></tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td> @user.Fio </td>
+            <td> @user.Position </td>
+            <td> @user.Login </td>
+            <td> @user.Year </td>
+            <td>
+        </tr>
+    }
+</table>
+    }
+
+</div>*@

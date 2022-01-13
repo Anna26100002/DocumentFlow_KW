@@ -1,0 +1,22 @@
+﻿@model IEnumerable<DocumentFlow_KW.Models.User>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+<div class="mx-auto" style="padding: 3%">
+    <h1 class="h3 mb-3 fw-normal">Сотрудники компании</h1>
+    <table class="table">
+        <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th></tr>
+
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td> @user.Fio </td>
+                <td> @user.Position </td>
+                <td> @user.Login </td>
+                <td> @user.Year </td>
+                <td>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

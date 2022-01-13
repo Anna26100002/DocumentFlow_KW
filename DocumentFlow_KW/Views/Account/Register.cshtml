@@ -1,0 +1,82 @@
+﻿@model DocumentFlow_KW.ViewModels.RegisterViewModel
+
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand disabled" href="/Home/Start/">Документооборот</a>
+                    <button class="navbar-toggler disabled" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                            <li class="nav-item">
+                                <a class="nav-link active disabled" aria-current="page" href="/Profile/" disabled>Мой профиль</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="/Users/" disabled>Сотрудники компании</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="#" disabled>Послать сообщение</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="#" disabled>Создать задачу</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="/Home/Start/" disabled>Выход</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Поиск</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="m-5" style="padding: 5%; justify-content: center;">
+            <main class="form-signin" style="width: 460px; vertical-align: inherit; justify-content: center; margin: auto; " width="150" height="150">
+                <h3 class="h3 mb-1 fw-normal">Регистрация нового пользователя</h3>
+
+                <form method="post" asp-controller="Account" asp-action="Register">
+                    <div asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-floating">
+                        <label asp-for="Fio"></label><br />
+                        <input type="text" class="form-control" id="floatingInput" asp-for="Fio" />
+                        <span asp-validation-for="Fio"></span>
+                    </div>
+
+                    <div class="form-floating">
+                        <label asp-for="Position"></label><br />
+                        <input type="text" class="form-control" id="floatingInput" asp-for="Position" />
+                        <span asp-validation-for="Position"></span>
+                    </div>
+                    <div class="form-floating">
+                        <label asp-for="Year"></label><br />
+                        <input type="text" class="form-control" id="floatingInput" asp-for="Year" />
+                        <span asp-validation-for="Year"></span>
+                    </div>
+                    <div class="form-floating">
+                        <label asp-for="Login"></label><br />
+                        <input type="text" class="form-control" id="floatingInput" asp-for="Login" />
+                        <span asp-validation-for="Login"></span>
+                    </div>
+                    <div class="form-floating">
+                        <label asp-for="Password"></label><br />
+                        <input type="text" class="form-control" id="floatingInput" asp-for="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <div class="form-floating">
+                        <label asp-for="PasswordConfirm"></label><br />
+                        <input type="text" class="form-control" id="floatingInput" asp-for="PasswordConfirm" />
+                        <span asp-validation-for="PasswordConfirm"></span>
+                    </div>
+                    <div class="pt-3">
+                        <button class="w-100 btn btn-lg btn-primary" type="submit">Регистрация</button>
+                        @*<input type="submit" value="Регистрация" />*@
+                    </div>
+                </form>
+            </main>
+        </div>
+    </body>
