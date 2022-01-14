@@ -15,5 +15,8 @@ namespace DocumentFlow_KW.ViewModels
         public IEnumerable<User> Users {get; set;}
         public Document Documents { get; set; }
 
+        public string Fio { get; set; } // Исполнитель
+
+        public User User { get; set; } //Тот, кто создал задачу
     }
 }
