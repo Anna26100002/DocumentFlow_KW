@@ -12,46 +12,92 @@ namespace DocumentFlow_KW.Controllers
 {
     public class DocumentController : Controller
     {
-        //UserManager<User> _userManager;
-        //RoleManager<IdentityRole> _roleManager;
-        public DocumentController()
-        {
-
+        UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
+        //private ApplicationContext db = new ApplicationContext();
+        private readonly ApplicationContext db;
+        public DocumentController(ApplicationContext db, UserManager<User> userManager) //Внедрение зависимостей для внедрения контекста                                                                                   
+        {                                                                               //БД в контроллер
+            this.db = db;
+            _userManager = userManager;
         }
+
 
         // GET: DocumentController
-        public ActionResult Index()
+        public async Task<ActionResult> IndexAsync()
         {
-            var model = new DocumentUsers();
+            //var model = new DocumentUsers();
+            //model.Users = db.Users.ToList();
 
+            //// получаем id текущего пользователя
+            //var id = _userManager.GetUserId(User);
+            //User user = await _userManager.FindByIdAsync(id);
+            //var Fio = user.Fio;
+            //model.Fio = Fio;
+            ////model = user.Fio;
             return View();
         }
 
+
         // GET: DocumentController/Details/5
-        public ActionResult Details(int id)
+        [HttpPost]
+        public async Task<ActionResult> DetailsAsync(DocumentUsers model) //Отображение задачи
+        //public ActionResult Details() //Отображение задачи
         {
-            return View();
+            Document document = await db.Documents.FindAsync(model.Documents.Id);
+            if (document == null)
+            {
+                return NotFound();
+            }
+            DocumentUsers documentUsers = new DocumentUsers { Documents = document, User = document.User, Fio = document.Executor };
+            return View(model);
+            //return View();
         }
 
         // GET: DocumentController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync()
         {
-            return View();
+            var model = new DocumentUsers
+            {
+                Users = db.Users.ToList()
+            };
+
+            // получаем id текущего пользователя
+            var id = _userManager.GetUserId(User);
+            User user2 = await _userManager.FindByIdAsync(id);
+            var Fio = user2.Fio;
+            model.Fio = Fio;
+            //model = user.Fio;
+            return View(model);
         }
 
         // POST: DocumentController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync(DocumentUsers model)
         {
-            try
+            //if (ModelState.IsValid)
+            //{
+                //получаем id текущего пользователя
+            var id = _userManager.GetUserId(User);
+            User user = await _userManager.FindByIdAsync(id);
+            Document document = new Document
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                Id = model.Documents.Id,
+                Type = model.Documents.Type,
+                Topic = model.Documents.Topic,
+                CreationDate = model.Documents.CreationDate,
+                User = user,
+                Executor = model.Documents.Executor,
+                Priority = model.Documents.Priority,
+                Description = model.Documents.Description,
+                Completed = false,
+            };
+            //добавляем документ в БД
+            db.Add(document);
+            await db.SaveChangesAsync();
+            return View(model);
+            //return RedirectToAction("Details", "Document");
+
         }
 
         // GET: DocumentController/Edit/5
@@ -67,7 +113,7 @@ namespace DocumentFlow_KW.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexAsync));
             }
             catch
             {
@@ -88,7 +134,7 @@ namespace DocumentFlow_KW.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexAsync));
             }
             catch
             {
