@@ -1,4 +1,5 @@
-﻿@model DocumentFlow_KW.ViewModels.DocumentUsers
+@*@model DocumentFlow_KW.ViewModels.DocumentUsers*@
+@model DocumentFlow_KW.ViewModels.Document
 @{
     ViewBag.Title = "Создание документа";
 }
@@ -8,15 +9,24 @@
     <form asp-action="Create" asp-controller="Document">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Documents.Topic" class="control-label, font-weight-bold">Тема </label>
-            <input type="text" asp-for="Documents.Topic" class="form-control" />
+            <label asp-for="Topic" class="control-label, font-weight-bold">Тема</label>
+            <input type="text" asp-for="Topic" class="form-control" />
+            @*@Model.Documents.Topic = 'Сделать отчёт';
+                @Model.Documents.Type = 'Обычная';
+                @Model.Documents.Priority = 'Высокий';
+                @Model.Documents.Executor = 'Кузнецова Екатерина Ивановна';
+                @Model.Documents.CreationDate = DateTime.Now;
+                @Model.Documents.EndDate = '25.04.2022 18:00:00';
+                @Model.Documents.Description = 'За месяц';
+                @Model.Documents. = DateTime.Now;*@
+
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Executor" class="control-label, font-weight-bold">Исполнитель </label>
-            <select asp-for="Documents.Executor" class="form-select">
-                <option selected>@Model.Fio</option>
+            <label asp-for="Executor" class="control-label, font-weight-bold">Исполнитель </label>
+            <select asp-for="Executor" class="form-select">
+                @*<option selected>@Model.Fio</option>*@
                 @{ int i = 1;
-                    @foreach (var user in Model.Users)
+                    @*@foreach (var user in Model.Users)
                     {
                         if (Equals(user.Fio, Model.Fio) == true)
                         {
@@ -24,28 +34,20 @@
                         }
                         <option>@user.Fio</option>
                         i++;
-                    }
+                    }*@
                 }
             </select>
             @*<input type="text" asp-for="Documents.Executor" class="form-control" />*@
 
         </div>
-        @*<div class="form-floating">
-            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                <option selected>Откройте это меню выбора</option>
-                <option value="1">Один</option>
-                <option value="2">Два</option>
-                <option value="3">Три</option>
-            </select>
-            <label for="floatingSelect">Работает с элементом выбора</label>
-        </div>*@
+
         <div class="form-group">
-            <label asp-for="Documents.CreationDate" class="control-label font-weight-bold">Дата создания</label>
-            <input type="datetime-local" asp-for="Documents.CreationDate" class="form-control" style="width: 210px;" />
+            <label asp-for="EndDate" class="control-label font-weight-bold">Срок выполнения до</label>
+            <input type="datetime-local" asp-for="EndDate" class="form-control" style="width: 210px;" />
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Priority" class="control-label font-weight-bold">Приоритет<br /></label>
-            <select asp-for="Documents.Priority" class="form-select" id="floatingSelect">
+            <label asp-for="Priority" class="control-label font-weight-bold">Приоритет<br /></label>
+            <select asp-for="Priority" class="form-select" id="floatingSelect">
                 @*<label>Приоритет</label>*@
                 <option selected>Низкий</option>
                 <option>Средний</option>
@@ -54,19 +56,19 @@
             </select>
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Type" class="control-label font-weight-bold">Категория</label>
-            <input type="text" asp-for="Documents.Type" class="form-control" />
+            <label asp-for="Type" class="control-label font-weight-bold">Категория</label>
+            <input type="text" asp-for="Type" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="Documents.Description" class="control-label font-weight-bold">Описание</label>
-            <textarea type="text" asp-for="Documents.Description" class="form-control" rows="3" style="height: 100px;"></textarea>
+            <label asp-for="Description" class="control-label font-weight-bold">Описание</label>
+            <textarea type="text" asp-for="Description" class="form-control" rows="3" style="height: 100px;"></textarea>
             @*<input type="text" asp-for="Documents.Description" class="form-control" style="height: 100px;" />*@
         </div>
     </form>
-        <form method ="post" asp-action="Details" asp-controller="Document">
-            <div class="form-group">
-                <input type="submit" value="Создать" class="btn btn-success" />
-            </div>
-        </form>
-    
+    <form asp-action="Create" asp-controller="Document">
+        <div class="form-group">
+            <input type="submit" value="Создать" class="btn btn-success" />
+        </div>
+    </form>
+
 </div>
