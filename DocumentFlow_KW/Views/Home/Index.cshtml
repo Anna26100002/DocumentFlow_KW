@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+@*@model IEnumerable<DocumentFlow_KW.Models.User>*@
+@model IEnumerable<DocumentFlow_KW.ViewModels.Document>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -14,7 +16,40 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="m-5" style="padding: 5%">
-            <p>@User.Identity.Name</p>
+            @*<p>@User.Identity.Name, ваши задачи</p>*@
+            <div class="mx-auto" style="padding: 3%">
+                <h1 class="h3 mb-3 fw-normal">Мои задачи</h1>
+                @*<a asp-action="Create"> Добавить пользователя </a>*@
+
+                <table class="table">
+                    <tr><th>Название документа</th><th>Тип</th><th>Приоритет</th><th>Назначил задачу</th><th>Выполнить до</th></tr>
+
+                    @*@foreach (var document in Model)*@
+                    @*{*@
+                        <tr>
+                            @*@if (Equals(document.Documents., Model) == false)
+                            {
+                                continue;
+                            }*@
+                            @*<td> @document.Topic </td>
+                            <td> @document.Type </td>
+                            <td> @document.Priority </td>
+                            <td> @document.Fio </td>
+                            <td> @document.EndDate</td>*@
+                            <td>
+                                @*<form asp-action="Delete" asp-route-id="@user.Id" method="post">*@
+
+                                @*<a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>*@
+                                @*<a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Сменить пароль</a>*@
+                                @*<button type="submit" class="btn btn-sm btn-danger">*@
+                                @*  Удалить*@
+                                @*</button>*@
+                                @*</form>*@
+                            </td>
+                        </tr>
+                    @*}*@
+                </table>
+            </div>
 
             <form method="post" asp-controller="Account" asp-action="Logout">
 
