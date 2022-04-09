@@ -1,4 +1,4 @@
-﻿using DocumentFlow_KW.Models;
+using DocumentFlow_KW.Models;
 using DocumentFlow_KW.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -45,53 +45,63 @@ namespace DocumentFlow_KW.Controllers
         //public ActionResult Details() //Отображение задачи
         {
             Document document = await db.Documents.FindAsync(model.Documents.Id);
+
             if (document == null)
             {
                 return NotFound();
             }
-            DocumentUsers documentUsers = new DocumentUsers { Documents = document, User = document.User, Fio = document.Executor };
+            //DocumentUsers documentUsers = new DocumentUsers { Documents = document, User = document.User, Fio = document.Executor };
+
             return View(model);
             //return View();
         }
 
         // GET: DocumentController/Create
+        [HttpGet]
         public async Task<ActionResult> CreateAsync()
         {
-            var model = new DocumentUsers
-            {
-                Users = db.Users.ToList()
-            };
-
+            Document document = new Document();
+            //var model = new DocumentUsers
+            //{
+            //    Users = db.Users.ToList(),
+            //    Documents = document,
+            //};
+            //var model = 
             // получаем id текущего пользователя
-            var id = _userManager.GetUserId(User);
-            User user2 = await _userManager.FindByIdAsync(id);
-            var Fio = user2.Fio;
-            model.Fio = Fio;
+            //var id = _userManager.GetUserId(User);
+            //User user2 = await _userManager.FindByIdAsync(id);
+            //var Fio = user2.Fio;
+            //model.Fio = Fio;
             //model = user.Fio;
-            return View(model);
+            //return View(model);
+            return View();
         }
 
         // POST: DocumentController/Create
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(DocumentUsers model)
+        public async Task<ActionResult> CreateAsync(Document model)
         {
             //if (ModelState.IsValid)
             //{
-                //получаем id текущего пользователя
+            //получаем id текущего пользователя
             var id = _userManager.GetUserId(User);
             User user = await _userManager.FindByIdAsync(id);
-            Document document = new Document
-            {
-                Id = model.Documents.Id,
-                Type = model.Documents.Type,
-                Topic = model.Documents.Topic,
-                CreationDate = model.Documents.CreationDate,
-                User = user,
-                Executor = model.Documents.Executor,
-                Priority = model.Documents.Priority,
-                Description = model.Documents.Description,
+            //user.Documents.Add(model.Documents);
+            Document document = new Document() {
+                Id = model.Id,
+                Type = model.Type,
+                Topic = model.Topic,
+                CreationDate = DateTime.Now,
+                EndDate = model.EndDate,
+                //User = user,
+                //Fio = user.Fio,
+                Fio = "кто-то",
+                Executor = model.Executor,
+                Priority = model.Priority,
+                Description = model.Description,
                 Completed = false,
-            };
+                };
+            //}
             //добавляем документ в БД
             db.Add(document);
             await db.SaveChangesAsync();
