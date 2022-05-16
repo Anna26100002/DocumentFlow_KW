@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DocumentFlow_KW.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -31,7 +31,7 @@ namespace DocumentFlow_KW.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Login = model.Login, UserName = model.Login, Year = model.Year, Fio = model.Fio, Position = model.Position };
+                User user = new User { Login = model.Login, UserName = model.Login, Year = model.Year, Fio = model.Fio, Position = model.Position};
 
                 // добавляем пользователя в БД
                 var result = await _userManager.CreateAsync(user, model.Password);

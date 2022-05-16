@@ -1,0 +1,94 @@
+﻿@model DocumentFlow_KW.ViewModels.DocumentUsersViewModel
+@{
+    ViewBag.Title = "Создание документа";
+    //Layout = null;
+}
+<head>
+
+</head>
+
+
+<div class="mx-auto" style="padding: 3%">
+    <h1 class="h3 mb-3 fw-normal">Создать документ</h1>
+    <form asp-action="Create" asp-controller="Document" method = "post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="DocumentViewModel.Topic" class="control-label, font-weight-bold">Название документа</label>
+            <input type="text" asp-for="DocumentViewModel.Topic" class="form-control" />
+        </div>
+
+        @*<label asp-for="Document.Type" class="control-label, font-weight-bold">Тип согласования</label>
+        <div class="form-check">      
+          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+          <label asp-for="Document.Type" class="form-check-label" for="exampleRadios1">
+            Паралелльное, не прерывать согласование в случает отказа и ждать решение всех согласующих
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+          <label  asp-for="Document.Type" class="form-check-label" for="exampleRadios2">
+           Последовательное, в том порядке, в котором сотрудники указаны в поле "Согласующие"
+          </label>
+        </div>*@
+
+        <div class="form-group">
+            <label asp-for="DocumentViewModel.Executor" class="control-label, font-weight-bold">Согласующий </label>
+            <@*select id ="sel" asp-for="Document.Executor" class="form-select">*@
+            <select asp-for= "DocumentViewModel.Executor" class = "form-select">
+                <option selected> @Model.DocumentViewModel.Fio </option>
+                @*<option selected disabled="true">--Selected--</option>*@
+                @{ int i = 1;
+                    @foreach (var user in Model.FioUsers)
+                    {
+                        if (Equals(user.Fio + " (" + user.Position + ")", Model.DocumentViewModel.Fio) == true)
+                        {
+                            continue;
+                        }
+                        <option>@user.Fio (@user.Position)</option>
+                        //<option>@user.Fio</option>
+                        i++;
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DocumentViewModel.EndDate" class="control-label font-weight-bold">Срок согласования до</label>
+            <input type="datetime-local" asp-for="DocumentViewModel.EndDate" class="form-control" style="width: 210px;" />
+        </div>
+        <div class="form-group">
+            <label asp-for="DocumentViewModel.Priority" class="control-label font-weight-bold">Приоритет<br /></label>
+            <select asp-for="DocumentViewModel.Priority" class="form-select" id="floatingSelect">
+                <option selected>Низкий</option>
+                <option>Средний</option>
+                <option>Высокий</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DocumentViewModel.Description" class="control-label font-weight-bold">Описание</label>
+            <textarea type="text" asp-for="DocumentViewModel.Description" class="form-control" rows="3" style="height: 100px;"></textarea>
+        </div>
+
+        @*<div class="form-group">
+            <label asp-for ="DocumentViewModel.FileData" for="exampleFormControlFile1">Загрузите документ не более 2000 Мб</label>
+            <input type="file" asp-for ="DocumentViewModel.FileData" name = "uploadedFile" enctype="multipart/form-data" class="form-control-file" id="exampleFormControlFile1">
+        </div>*@
+
+        <div class="form-group">
+            <input type="submit" value="Создать" class="btn btn-success" onclick='if (Document.Topic.value=="" || Document.EndDate.value=="") {alert("Заполните обязательные поля")} else {form.submit()}' />
+        </div>
+    </form>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script>
+    $(document).ready(function() {
+        $('#selectdll').select2({
+
+        });
+    })
+</script>

@@ -1,0 +1,69 @@
+﻿@model DocumentFlow_KW.ViewModels.Task
+
+<h1 class="h3 mb-3 fw-normal" style="margin-top: 100px;">@Model.Topic</h1>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#" disabled>О задаче</a>
+    </li>
+</ul>
+<div class="my-3" style="padding: 2%; float:left; width: 700px">
+    <label for="name">Срок выполнения            с @Model.CreationDate.ToString("g") <img src="/img/time.png"> по <b>@Model.EndDate.ToString("g")</b> <img src="/img/time.png"></label>
+    <div class="my-4">
+    <h6 for="name">Описание </h6>
+@*    <label>@Model.Description</label>
+    <label> Автор задачи @Model.Fio</label>*@
+    <div class="my-2" style="background-color:rgb(216, 219, 255); padding-left:2%">
+        @Model.Description
+    </div>
+    </div>
+    <div class="my-3">
+    <label for="name"><b>Тип задачи: </b>@Model.Type </label>
+    </div>
+    <div>
+        <label for="name"><b>Приоритет: </b>@Model.Priority</label>
+    </div>
+    <div class="form-group">
+            @*<input type="submit" value="Выполнена" class="btn btn-success"/>*@
+            <a class="btn btn-success btn-lg" style="margin: 15px 15px 15px" asp-action="CompletedTask" asp-route-id="@Model.Id">Выполнена</a>
+    </div>
+</div>
+<div class="my-3" style="padding: 1%; float:left; width: 250px">
+    <div style="background-color:rgb(216, 219, 255); padding: 2% ">  
+    <h6>Автор</h6>
+    <div class="my-2">
+        @Model.Fio.Substring(0, Model.Fio.IndexOf('('))
+    </div>
+    <div class="my-2">
+        <em>@Model.Fio.Substring(Model.Fio.IndexOf('('), Model.Fio.Length-Model.Fio.IndexOf('('))</em>
+    </div>
+    <hr />
+   @* @String word = @Model.Executor.Substring(0, Model.Executor.IndexOf('('))*@
+    <h6>Исполнитель</h6>
+    <div class="my-2">
+        @*@Model.Executor*@
+        @Model.Executor.Substring(0, Model.Executor.IndexOf('('))
+    </div>
+    <div class="my-2">
+        <em>@Model.Executor.Substring(Model.Executor.IndexOf('('), Model.Executor.Length-Model.Executor.IndexOf('('))</em>
+    </div>
+    </div>
+    @if (@Model.Completed == false)
+    {
+         <div class="my-2" style="background-color:rgb(255, 176, 149); padding: 2%">
+             <h6>Статус задачи</h6>
+             <div class="my-2">
+            Не выполнена
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="my-2" style="background-color:rgb(126, 255, 140)">
+             <h6>Статус задачи</h6>
+             <div class="my-2">
+            Выполнена
+            </div>
+        </div>
+    }
+</div>

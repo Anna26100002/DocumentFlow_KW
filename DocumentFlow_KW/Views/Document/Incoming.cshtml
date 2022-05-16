@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DocumentFlow_KW.ViewModels.Document>
+<div class="mx-auto" style="padding: 3%">
+<h2 class="h3 mb-3 fw-normal">Входящие документы</h2>
+                <div style= "height: 500px; overflow-y: scroll; font-size: 10pt">
+                <table class="table table-hover table-striped table-hover table-bordered">
+                     <thead class="table-light">
+                    <tr><th>Название</th><th>Приоритет</th><th>Автор</th><th>Срок до</th><th>Статус</th></tr>
+                    </thead>
+                    @foreach (var document in Model)
+                    {
+                        <tr>
+                            @*@if (Equals(document.Documents., Model) == false)
+                            {
+                                continue;
+                            }*@
+                            <td> @document.Topic </td>
+                            <td> @document.Priority </td>
+                            <td> @document.Fio </td>
+                            <td> @document.EndDate.ToString("g")</td>
+                           @if (@document.Status == "Согласован"){
+                                <td class="table-success"> @document.Status</td>
+                            }
+                            else if (@document.Status == "Отказано"){
+                                <td class="table-secondary"> @document.Status</td>
+                            }
+                            else
+                            {
+                                <td class="table-danger"> @document.Status</td>
+                            }
+                                <td>
+                                @*<form asp-action="Details" asp-route-id="@document.Id" method="post">*@
+
+                                <a class="btn btn-sm btn-primary btn-lg" style="margin: 12px 12px 12px; font-size: 9pt" asp-controller="Home" asp-action="DetailsDocument" asp-route-id="@document.Id">Подробнее</a>
+                                @*<button type="submit" class="btn btn-sm btn-danger">
+                                  Удалить
+                                </button>*@
+                                @*</form>*@
+                            </td>
+                        </tr>
+                    }
+                </table>
+                </div>
+            </div>

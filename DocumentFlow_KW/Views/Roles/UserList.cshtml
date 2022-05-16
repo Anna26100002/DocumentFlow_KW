@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<DocumentFlow_KW.Models.User>
 
-<h2>Список пользователей</h2>
-<table class="table">
-    @foreach (var user in Model)
-    {
-        <tr>
-            <td>@user.Login</td>
-            <td>
-                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права доступа</a>
-            </td>
-        </tr>
-    }
-</table>
+    <div class="mx-auto" style="padding: 3%">
+        <h2 class="h3 mb-3 fw-normal">Список пользователей</h2>
+        <table class="table">
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Login</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права доступа</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        </div>

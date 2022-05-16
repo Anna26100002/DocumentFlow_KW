@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace DocumentFlow_KW.Controllers
 {
-    public class ProfileController : Controller
+    public class ProfileController : Microsoft.AspNetCore.Mvc.Controller
     {
 
         UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
-
-        public ProfileController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        private readonly ApplicationContext db;
+        public ProfileController(ApplicationContext db, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
-
+            this.db = db;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -31,13 +31,13 @@ namespace DocumentFlow_KW.Controllers
         }
 
         // GET: DataController/Details/5
-        public ActionResult Details(int id)
+        public Microsoft.AspNetCore.Mvc.ActionResult Details(int id)
         {
             return View();
         }
 
         // GET: DataController/Create
-        public ActionResult Create()
+        public Microsoft.AspNetCore.Mvc.ActionResult Create()
         {
             return View();
         }
@@ -45,7 +45,7 @@ namespace DocumentFlow_KW.Controllers
         // POST: DataController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public Microsoft.AspNetCore.Mvc.ActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -65,7 +65,21 @@ namespace DocumentFlow_KW.Controllers
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Login = user.Login, Year = user.Year, Fio = user.Fio, Position = user.Position };
+            var Fio = user.Fio;
+            var Position = user.Position;
+            var FioPosition = Fio + " (" + Position + ")";
+
+            EditUserViewModel model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Login = user.Login,
+                Year = user.Year,
+                Fio = user.Fio,
+                Position = user.Position,
+                Chief = user.Chief,
+                FioUsers = db.Users.ToList(),
+                FioPosition = FioPosition
+            };
             return View(model);
         }
 
@@ -84,6 +98,7 @@ namespace DocumentFlow_KW.Controllers
                     user.Year = model.Year;
                     user.Fio = model.Fio;
                     user.Position = model.Position;
+                    user.Chief = model.Chief;
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
@@ -144,7 +159,7 @@ namespace DocumentFlow_KW.Controllers
         }
 
         // GET: DataController/Delete/5
-        public ActionResult Delete(int id)
+        public Microsoft.AspNetCore.Mvc.ActionResult Delete(int id)
         {
             return View();
         }
@@ -152,7 +167,7 @@ namespace DocumentFlow_KW.Controllers
         // POST: DataController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public Microsoft.AspNetCore.Mvc.ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {

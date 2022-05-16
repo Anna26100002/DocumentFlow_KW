@@ -9,28 +9,40 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    @*<header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DocumentFlow_KW</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+@*    <div class="flex-shrink-0 p-3 m-5 text-white bg-dark" style="width: 200px;">
+    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-white text-decoration-none border-bottom">
+      <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-5 fw-semibold"></span>
+    </a>
+    <ul class="list-unstyled ps-0">
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+          Документы
+        </button>
+        <div class="collapse" id="home-collapse" style="">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-white rounded">Входящие</a></li>
+            <li><a href="#" class="link-white rounded">Исходящие</a></li>
+            <li><a href="#" class="link-white rounded">Сотрудников</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+          Задачи
+        </button>
+        <div class="collapse" id="dashboard-collapse" style="">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-white rounded">Входящие</a></li>
+            <li><a href="#" class="link-white rounded">Исходящие</a></li>
+            <li><a href="#" class="link-white rounded">Сотрудников</a></li>
+          </ul>
+        </div>
+      </li>
 
-            </nav>
-        </header>*@
+    </ul>
+  </div>*@
+  
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
@@ -47,19 +59,45 @@
                             <a class="nav-link" href="/Users/">Сотрудники компании</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Послать сообщение</a>
+                            <a class="nav-link" href="/Task/Create/">Создать задачу</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Document">Создать задачу</a>
+                        <li class="dropdown">
+                            <a class="nav-link" data-toggle="dropdown" href="#">Все задачи</a>
+                            <ul class="dropdown-menu">
+                             <li><a href="/Task/Incoming/">Входящие</a></li>
+                             <li><a href="/Task/Outgoing/">Исходящие</a></li>
+                             <li><a href="/Task/Employees/">Сотрудников</a></li>
+                            </ul>
                         </li>
+                        <li class="dropdown">
+                            <a class="nav-link" href="/Document/Create/">Отправить документ</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="nav-link" data-toggle="dropdown" href="#">Все документы</a>
+                            <ul class="dropdown-menu">
+                             <li><a href="/Document/Incoming/">Входящие</a></li>
+                             <li><a href="/Document/Outgoing/">Исходящие</a></li>
+                             <li><a href="/Document/Employees/">Сотрудников</a></li>
+                            </ul>
+                        </li>
+                     
                         <li class="nav-item">
                             <a class="nav-link" href="/Home/Start/">Выход</a>
                         </li>
                     </ul>
-                    <form class="d-flex">
+                    @*<form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Поиск</button>
-                    </form>
+                    </form>*@
+                            <div class="input-group ps-5">
+                                <div id="navbar-search-autocomplete" class="form-outline">
+                                    <input type="search" id="form1" class="form-control" />
+                                    <label class="form-label" for="form1">Поиск</label>
+                                </div>
+                              <button type="button" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                              </button>
+                            </div>
                 </div>
             </div>
         </nav>
@@ -78,20 +116,20 @@
             <p><a class="btn btn-lg btn-primary" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Зарегистрироваться</font></font></a></p>
         </div>*@
 
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    @*<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <p class="col-md-4 mb-0 text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">© Электронный документооборот 2021, Inc.</font></font></p>
 
         <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
             <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
         </a>
 
-        <ul class="nav col-md-4 justify-content-end">
+@*        <ul class="nav col-md-4 justify-content-end">
             <li class="nav-item"><a href="#" class="nav-link px-2 text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Главная</font></font></a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Функции</font></font></a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FAQs</font></font></a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">О нас</font></font></a></li>
-        </ul>
-    </footer>
+        </ul>*@
+    @*</footer>*@
     @*<footer class="border-top footer text-muted">
             <div class="container">
                 &copy; 2021 - DocumentFlow_KW - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -101,6 +139,20 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @*<script src="~/js/bootstrap.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        const navbarAutocomplete = document.querySelector('#navbar-search-autocomplete');
+        const navbarData = ['One', 'Two', 'Three', 'Four', 'Five'];
+        const navbarDataFilter = (value) => {
+        return navbarData.filter((item) => {
+        return item.toLowerCase().startsWith(value.toLowerCase());
+            });
+        };
+
+        new mdb.Autocomplete(navbarAutocomplete, {
+            filter: navbarDataFilter,
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

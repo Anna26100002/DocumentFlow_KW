@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DocumentFlow_KW.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController : Microsoft.AspNetCore.Mvc.Controller
     {
         RoleManager<IdentityRole> _roleManager;
         UserManager<User> _userManager;

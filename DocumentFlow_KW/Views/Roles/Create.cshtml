@@ -1,11 +1,13 @@
 ﻿@model string
+    <div class="mx-auto" style="padding: 3%">
+        <h2 class="h3 mb-3 fw-normal">Добавление новой роли</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
 
-<div asp-validation-summary="All" class="text-danger"></div>
-
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label for="name">Новая роль</label>
-        <input name="name" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Добавить</button>
-</form>
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label for="name">Новая роль</label>
+                <input name="name" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+        </div>

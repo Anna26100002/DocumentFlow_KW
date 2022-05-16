@@ -16,6 +16,8 @@ namespace DocumentFlow_KW.Models
         public string Fio { get; set; }
         public string Position { get; set; }
         public int Year { get; set; }
-        public virtual ICollection<Document> Documents { get; set; }
+
+        public string Chief { get; set; }
+        //public virtual ICollection<Document> Documents { get; set; }
     }
 }

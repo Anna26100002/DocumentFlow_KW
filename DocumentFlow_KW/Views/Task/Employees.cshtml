@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DocumentFlow_KW.ViewModels.Task>
+<div class="mx-auto" style="padding: 3%">
+<h2 class="h3 mb-3 fw-normal">Задачи сотрудников</h2>
+    <div style= "height: 500px; overflow-y: scroll; font-size: 10pt">
+         <table class="table table-hover table-striped table-bordered">
+              <thead class="table-light">
+              <tr><th>Название</th><th>Приоритет</th><th>Автор</th><th>Исполнитель</th><th>Срок до</th><th>Статус</th></tr>
+              </thead>
+               @foreach (var task in Model)
+               {
+                    <tr>
+                     <td> @task.Topic </td>
+                     <td> @task.Priority </td>
+                     <td> @task.Fio </td>
+                     <td> @task.Executor </td>
+                     <td> @task.EndDate.ToString("g")</td>
+                    @if (@task.Completed == true){
+                          <td class="table-success"> Выполнена</td>
+                    }
+                    else{
+                        <td class="table-danger"> Не выполнена</td>
+                    }
+                        <td>
+                           <a class="btn btn-sm btn-primary btn-lg" style="margin: 12px 12px 12px; font-size: 9pt" asp-controller="Home" asp-action="DetailsTask" asp-route-id="@task.Id">Подробнее</a>
+                        </td>
+                    </tr>
+               }
+         </table>
+    </div>
+</div>

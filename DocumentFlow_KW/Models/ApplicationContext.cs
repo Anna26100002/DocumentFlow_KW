@@ -15,8 +15,10 @@ namespace DocumentFlow_KW.Models
             //Database.EnsureCreated();
         }
 
-        public DbSet<User> User { get; set; }
-        public DbSet<Document> Documents { get; set; }
-        public DbSet<DocumentUsers> DocumentUsers { get; set; }
+        //public DbSet<User> User { get; set; }
+        public DbSet<ViewModels.Task> Tasks { get; set; }
+        public DbSet<ViewModels.Document> Documents { get; set; }
+        //public DbSet<ViewModels.EveryExecutor> EveryExecutors { get; set; }
+        public DbSet<DocumentViewModel> Files { get; set; }
     }
 }

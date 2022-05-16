@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 
 namespace DocumentFlow_KW.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : Microsoft.AspNetCore.Mvc.Controller
     {
 
         UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationContext db;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public UsersController(ApplicationContext db, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
-            
+            this.db = db;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -67,7 +68,7 @@ namespace DocumentFlow_KW.Controllers
 
 
             // GET: UsersController/Create
-            public ActionResult Create() => View();
+            public Microsoft.AspNetCore.Mvc.ActionResult Create() => View();
 
         // POST: UsersController/Create
         [HttpPost]
@@ -90,7 +91,6 @@ namespace DocumentFlow_KW.Controllers
                     }
                 }
             }
-
             return View(model);
         }
 
@@ -98,11 +98,25 @@ namespace DocumentFlow_KW.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
+
             if (user == null)
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Login = user.Login, Year = user.Year, Fio = user.Fio, Position = user.Position };
+            var Fio = user.Fio;
+            var Position = user.Position;
+            var FioPosition = Fio + " (" + Position + ")";
+
+            EditUserViewModel model = new EditUserViewModel {
+                Id = user.Id,
+                Login = user.Login,
+                Year = user.Year,
+                Fio = user.Fio,
+                Position = user.Position,
+                Chief = user.Chief,
+                FioUsers = db.Users.ToList(),
+                FioPosition = FioPosition
+            };
             return View(model);
         }
 
@@ -120,6 +134,7 @@ namespace DocumentFlow_KW.Controllers
                     user.Year = model.Year;
                     user.Fio = model.Fio;
                     user.Position = model.Position;
+                    user.Chief = model.Chief;
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
@@ -141,7 +156,7 @@ namespace DocumentFlow_KW.Controllers
 
         // POST: UsersController/Delete/5
         [HttpPost]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<Microsoft.AspNetCore.Mvc.ActionResult> Delete(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
             if (user != null)

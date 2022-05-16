@@ -25,6 +25,27 @@
             <label asp-for="Year" class="control-label">Год рождения</label>
             <input type="number" asp-for="Year" class="form-control" />
         </div>
+
+        <div class="form-group">
+            <label asp-for="Year" class="control-label">Руководитель</label>
+            <input type="number" asp-for="Year" class="form-control" />
+            <select asp-for="Chief" class="form-select">
+                @*<option selected>@Model.FioUsers </option>*@
+                <option selected></option>
+                @{ int i = 1;
+                    @foreach (var user in Model.FioUsers)
+                    {
+                        if (Equals(user.Fio + " (" + user.Position + ")", Model.FioPosition) == true)
+                        {
+                            continue;
+                        }
+                        <option>@user.Fio (@user.Position)</option>
+                        //<option>@user.Fio</option>
+                        i++;
+                    }
+                }
+            </select>
+        </div>
         <div class="form-group">
             <input type="submit" value="Сохранить" class="btn btn-success" />
         </div>
