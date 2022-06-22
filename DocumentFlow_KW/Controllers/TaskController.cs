@@ -47,6 +47,13 @@ namespace DocumentFlow_KW.Controllers
             //{
             //    return NotFound();
             //}
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
             var task = db.Tasks.Single(xx => xx.Id == model.Id);
 
             //return View(model);
@@ -124,6 +131,7 @@ namespace DocumentFlow_KW.Controllers
 
         }
 
+        [HttpGet]
         public async Task<IActionResult> IncomingAsync()
         {
             //получаем id текущего пользователя
@@ -136,12 +144,80 @@ namespace DocumentFlow_KW.Controllers
             var Executor2 = user2.Fio;
             var Position = user2.Position;
             var ExecutorPosition = Executor2 + " (" + Position + ")";
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+            var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0} ORDER BY Id DESC", ExecutorPosition).ToList();
+            TaskViewModel taskView = new TaskViewModel
+            {
+                Tasks = tasks,
+                Count = tasks.Count,
+            };
 
-            var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0}", ExecutorPosition).ToList();
-
-            return View(tasks);
+            return View(taskView);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> IncomingAsync(TaskViewModel model)
+        {
+            //получаем id текущего пользователя
+            var id = _userManager.GetUserId(User);
+            User user2 = await _userManager.FindByIdAsync(id);
+            if (user2 == null)
+            {
+                return RedirectToAction("Start", "Home");
+            }
+            var Executor2 = user2.Fio;
+            var Position = user2.Position;
+            var ExecutorPosition = Executor2 + " (" + Position + ")";
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+
+
+            TaskViewModel taskView = new TaskViewModel
+            {
+                //Tasks = model.Tasks,
+            };
+            if (model.Search != null && model.Search2 != null)
+            {
+                taskView.Search = model.Search.ToLower();
+                taskView.Search2 = model.Search2.ToLower();
+                var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(t => t.Fio.ToLower().Contains(taskView.Search2)).Where(c => c.Executor == ExecutorPosition).OrderByDescending(Id => Id.Id).ToList();
+                taskView.Tasks = selectedTask;
+                taskView.Count = selectedTask.Count;
+            }
+            else if (model.Search != null)
+            {
+                taskView.Search = model.Search.ToLower();
+                var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(c => c.Executor == ExecutorPosition).OrderByDescending(Id => Id.Id).ToList();
+                taskView.Tasks = selectedTask;
+                taskView.Count = selectedTask.Count;
+            }
+            else if (model.Search2 != null)
+            {
+                taskView.Search2 = model.Search2.ToLower();
+                var selectedTask = db.Tasks.Where(t => t.Fio.ToLower().Contains(taskView.Search2)).Where(c => c.Executor == ExecutorPosition).OrderByDescending(Id => Id.Id).ToList();
+                taskView.Tasks = selectedTask;
+                taskView.Count = selectedTask.Count;
+            }
+            else
+            {
+                return RedirectToAction("Incoming", "Task");
+            }
+            taskView.Search = "";
+            return View(taskView);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> OutgoingAsync()
         {
             //получаем id текущего пользователя
@@ -154,11 +230,83 @@ namespace DocumentFlow_KW.Controllers
             var Author = user2.Fio;
             var Position = user2.Position;
             var AuthorPosition = Author + " (" + Position + ")";
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+            var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Fio = {0} ORDER BY Id DESC", AuthorPosition).ToList();
+            TaskViewModel taskView = new TaskViewModel
+            {
+                Tasks = tasks,
+                Count = tasks.Count,
+            };
 
-            var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Fio = {0}", AuthorPosition).ToList();
-            return View(tasks);
+            return View(taskView);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> OutgoingAsync(TaskViewModel model)
+        {
+            //получаем id текущего пользователя
+            var id = _userManager.GetUserId(User);
+            User user2 = await _userManager.FindByIdAsync(id);
+            if (user2 == null)
+            {
+                return RedirectToAction("Start", "Home");
+            }
+            var Author = user2.Fio;
+            var Position = user2.Position;
+            var AuthorPosition = Author + " (" + Position + ")";
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+            //var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Fio = {0} ORDER BY Id DESC", AuthorPosition).ToList();
+            TaskViewModel taskView = new TaskViewModel
+            {
+                //Tasks = model.Tasks,
+            };
+            if (model.Search != null && model.Search2 != null)
+            {
+                taskView.Search = model.Search.ToLower();
+                taskView.Search2 = model.Search2.ToLower();
+                var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(t => t.Executor.ToLower().Contains(taskView.Search2)).Where(c => c.Fio == AuthorPosition).OrderByDescending(Id => Id.Id).ToList();
+                taskView.Tasks = selectedTask;
+                taskView.Count = selectedTask.Count;
+            }
+            else if (model.Search != null)
+            {
+                taskView.Search = model.Search.ToLower();
+                var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(c => c.Fio == AuthorPosition).OrderByDescending(Id => Id.Id).ToList();
+                taskView.Tasks = selectedTask;
+                taskView.Count = selectedTask.Count;
+            }
+            else if (model.Search2 != null)
+            {
+                taskView.Search2 = model.Search2.ToLower();
+                var selectedTask = db.Tasks.Where(t => t.Executor.ToLower().Contains(taskView.Search2)).Where(c => c.Fio == AuthorPosition).OrderByDescending(Id => Id.Id).ToList();
+                taskView.Tasks = selectedTask;
+                taskView.Count = selectedTask.Count;
+            }
+            else
+            {
+                return RedirectToAction("Outgoing", "Task");
+            }
+            //var taskSearch = db.Tasks.Select(c => c.Topic.ToLower()).ToList();
+            //var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(c => c.Fio == AuthorPosition).OrderByDescending(Id => Id.Id).ToList();
+            //taskView.Tasks = selectedTask;
+            taskView.Search = "";
+            //taskView.Count = selectedTask.Count;
+            return View(taskView);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> EmployeesAsync()
         {
             //получаем id текущего пользователя
@@ -174,16 +322,133 @@ namespace DocumentFlow_KW.Controllers
             var employees = db.Users.FromSqlRaw("SELECT * FROM AspNetUsers WHERE Chief = {0}", ChiefPosition).ToList();
             List<ViewModels.Task> tasks = new List<ViewModels.Task>();
             List<ViewModels.Task> task = new List<ViewModels.Task>();
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+
             foreach (var employee in employees)
             {
                 var Fio = employee.Fio;
                 var Position2 = employee.Position;
                 var FioPosition2 = Fio + " (" + Position2 + ")";
-                task = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0}", FioPosition2).ToList();
+                task = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0} ORDER BY Id DESC", FioPosition2).ToList();
                 tasks.AddRange(task);
             }
 
-            return View(tasks);
+            TaskViewModel taskView = new TaskViewModel
+            {
+                Tasks = tasks,
+                Count = tasks.Count,
+            };
+
+            return View(taskView);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmployeesAsync(TaskViewModel model)
+        {
+            //получаем id текущего пользователя
+            var id = _userManager.GetUserId(User);
+            User user2 = await _userManager.FindByIdAsync(id);
+            if (user2 == null)
+            {
+                return RedirectToAction("Start", "Home");
+            }
+            var Chief = user2.Fio;
+            var Position = user2.Position;
+            var ChiefPosition = Chief + " (" + Position + ")";
+            var employees = db.Users.FromSqlRaw("SELECT * FROM AspNetUsers WHERE Chief = {0}", ChiefPosition).ToList();
+            List<ViewModels.Task> selectedTasks = new List<ViewModels.Task>();
+            List<ViewModels.Task> selectedTask = new List<ViewModels.Task>();
+            List<ViewModels.Task> task = new List<ViewModels.Task>();
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+
+            //foreach (var employee in employees)
+            //{
+            //    var Fio = employee.Fio;
+            //    var Position2 = employee.Position;
+            //    var FioPosition2 = Fio + " (" + Position2 + ")";
+            //    task = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0} ORDER BY Id DESC", FioPosition2).ToList();
+            //    tasks.AddRange(task);
+            //}
+
+            TaskViewModel taskView = new TaskViewModel();
+
+            if (model.Search != null && model.Search2 != null)
+            {
+                taskView.Search = model.Search.ToLower();
+                taskView.Search2 = model.Search2.ToLower();
+                foreach (var employee in employees)
+                {
+                    var Fio = employee.Fio;
+                    var Position2 = employee.Position;
+                    var FioPosition2 = Fio + " (" + Position2 + ")";
+                    selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(t => t.Executor.ToLower().Contains(taskView.Search2)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
+                    selectedTasks.AddRange(selectedTask);
+
+                }
+                //taskView.Tasks = selectedTask;
+                //taskView.Count = selectedTask.Count;
+                //taskView.Search = "";
+                //taskView.Search2 = "";
+                //return View(taskView);
+            }
+            else if (model.Search != null)
+            {
+                taskView.Search = model.Search.ToLower();
+                foreach (var employee in employees)
+                {
+                    var Fio = employee.Fio;
+                    var Position2 = employee.Position;
+                    var FioPosition2 = Fio + " (" + Position2 + ")";
+                    selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
+                    selectedTasks.AddRange(selectedTask);
+                    
+                }
+            }
+            else if (model.Search2 != null)
+            {
+                taskView.Search2 = model.Search2.ToLower();
+                foreach (var employee in employees)
+                {
+                    var Fio = employee.Fio;
+                    var Position2 = employee.Position;
+                    var FioPosition2 = Fio + " (" + Position2 + ")";
+                    selectedTask = db.Tasks.Where(t => t.Executor.ToLower().Contains(taskView.Search2)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
+                    selectedTasks.AddRange(selectedTask);
+                    
+                }
+            }
+            else
+            {
+                return RedirectToAction("Employees", "Task");
+            }
+            //var taskSearch = db.Tasks.Select(c => c.Topic.ToLower()).ToList();
+            //foreach (var employee in employees)
+            //{
+            //    var Fio = employee.Fio;
+            //    var Position2 = employee.Position;
+            //    var FioPosition2 = Fio + " (" + Position2 + ")";
+            //    var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
+            //    selectedTasks.AddRange(selectedTask);
+            //}
+            ////var selectedTask = db.Tasks.Where(t => t.Topic.ToLower().Contains(taskView.Search)).Where(c => c.Executor == FioPosition2).ToList();
+            taskView.Tasks = selectedTasks;
+            taskView.Count = selectedTasks.Count;
+            taskView.Search = "";
+            taskView.Search2 = "";
+            return View(taskView);
+
         }
         // GET: TaskController/Edit/5
         public Microsoft.AspNetCore.Mvc.ActionResult Edit(int id)

@@ -35,7 +35,7 @@
     }
     else
     {
-        <label for="name"><b>Задача выполнена за </b> @TimeSpan.Parse(Model.TimeCompleted).Days дней @TimeSpan.Parse(Model.TimeCompleted).Hours ч @TimeSpan.Parse(Model.TimeCompleted).Minutes мин</label>
+        <label for="name"><b>Задача выполнена за </b> @TimeSpan.Parse(Model.TimeCompleted).Days д @TimeSpan.Parse(Model.TimeCompleted).Hours ч @TimeSpan.Parse(Model.TimeCompleted).Minutes мин</label>
     }
     </div>
 
@@ -60,7 +60,7 @@
         }
         else{
         
-            <label><b>KPI: </b>Просрочена на @TimeSpan.Parse(Model.KPI).Days дней @TimeSpan.Parse(Model.KPI).Hours ч @TimeSpan.Parse(Model.KPI).Minutes мин <img src = "~/img/red.png"></label>
+            <label><b>KPI: </b>Просрочена на @TimeSpan.Parse(Model.KPI).Days д @TimeSpan.Parse(Model.KPI).Hours ч @TimeSpan.Parse(Model.KPI).Minutes мин <img src = "~/img/red.png"></label>
          
         }
     }
@@ -97,10 +97,11 @@
     }
     else
     {
-        <div class="my-2" style="background-color:rgb(126, 255, 140)">
+        <div class="my-2" style="background-color:rgb(126, 255, 140); padding: 2%">
              <h6>Статус задачи</h6>
              <div class="my-2">
-            Выполнена
+            Выполнена <br>
+            @*@Model.Term*@
             </div>
         </div>
     }

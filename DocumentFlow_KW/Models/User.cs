@@ -18,6 +18,8 @@ namespace DocumentFlow_KW.Models
         public int Year { get; set; }
 
         public string Chief { get; set; }
+
+        public double? KPI { get; set; }
         //public virtual ICollection<Document> Documents { get; set; }
     }
 }

@@ -6,7 +6,7 @@
             @foreach (var user in Model)
             {
                 <tr>
-                    <td>@user.Login</td>
+                    <td>@user.Fio (@user.Position)</td>
                     <td>
                         <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права доступа</a>
                     </td>

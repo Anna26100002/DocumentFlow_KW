@@ -5,7 +5,7 @@
 <div class="mx-auto" style="padding: 3%">
     <h1 class="h3 mb-3 fw-normal">Сотрудники компании</h1>
     <table class="table">
-        <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th></tr>
+        <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th><th>KPI</th></tr>
 
         @foreach (var user in Model)
         {
@@ -14,6 +14,7 @@
                 <td> @user.Position </td>
                 <td> @user.Login </td>
                 <td> @user.Year </td>
+                <td> @user.KPI % </td>
                 <td>
                 </td>
             </tr>

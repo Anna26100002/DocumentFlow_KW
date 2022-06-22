@@ -13,9 +13,10 @@ namespace DocumentFlow_KW.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly ApplicationContext db;
+        public AccountController(ApplicationContext db, UserManager<User> userManager, SignInManager<User> signInManager)
         {
+            this.db = db;
             _userManager = userManager; //Для управления пользователя
             _signInManager = signInManager; //Для его аутентификации, установки и удаления его куки
         }
@@ -35,6 +36,12 @@ namespace DocumentFlow_KW.Controllers
 
                 // добавляем пользователя в БД
                 var result = await _userManager.CreateAsync(user, model.Password);
+                KPI KPI = new KPI
+                {
+                    user = user.Fio,
+                };
+                db.KPI.Add(KPI);
+                db.SaveChanges();
                 if (result.Succeeded)
                 {
                     // установка аутентифицированных куки для добавления пользователя

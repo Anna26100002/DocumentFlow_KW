@@ -1,18 +1,43 @@
-﻿@model IEnumerable<DocumentFlow_KW.ViewModels.Task>
+﻿@model DocumentFlow_KW.ViewModels.TaskViewModel
 <div class="mx-auto" style="padding: 3%">
 <h2 class="h3 mb-3 fw-normal">Исходящие задачи</h2>
-    <div style= "height: 500px; overflow-y: scroll; font-size: 10pt">
+    <div style= "height: 500px; width: 1150px; overflow-y: scroll; font-size: 10pt">
+        <form class="form-inline" asp-action="Outgoing" asp-controller="Task" method = "post">
+           <div>
+               <label style="margin-right: 210px;"><i>Поиск по названию:</i></label>
+            <input type="text" asp-for="Search" class="form-control" style="width: 250px" />        
+            @*<input type="submit" value="Поиск" class="btn btn-success" />*@
+            @*<button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+</svg><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                Поиск
+              </font></font></button>*@
+              </div>
+              <div>
+               <label style="margin-right: 210px;"><i>Поиск по исполнителю:</i></label>
+            <input type="text" asp-for="Search2" class="form-control" style="width: 250px" />        
+            <button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+</svg><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                Поиск
+              </font></font></button>
+              </div>
+              <label style="margin-left: 1060px;"><i>Всего: @Model.Count</i></label>
+        </form>
          <table class="table table-hover table-striped table-bordered">
               <thead class="table-light">
               <tr><th>Название</th><th>Приоритет</th><th>Исполнитель</th><th>Срок до</th><th>Статус</th></tr>
               </thead>
-               @foreach (var task in Model)
+              @*@Model.Reverse();*@
+               @foreach (var task in Model.Tasks)
                {
                     <tr>
                      <td> @task.Topic </td>
                      <td> @task.Priority </td>
                      <td> @task.Executor </td>
-                     <td> @task.EndDate.ToString("g")</td>
+                     <td> @task.EndDate.ToString("g") <br /> @task.Term</td>
                     @if (@task.Completed == true){
                           <td class="table-success"> Выполнена</td>
                     }

@@ -16,17 +16,25 @@
     <div class="my-2" style="background-color:rgb(216, 219, 255); padding-left:2%">
         @Model.Description
     </div>
+    @if (Model.FileName != null)
+    {
+    <div class="my-2" padding-left:2%"> Прикреплённый файл
+            <a href=@Model.FileName download=@Model.FileName>
+        @Model.FileName
+    </a>
+    </div>
+    }
     </div>
 
     <div>
         <label for="name"><b>Приоритет: </b>@Model.Priority</label>
     </div>
     <div>
-        <label>Укажите причину, почему Вы не согласовали документ</label>
+        <label>Укажите причину, почему Вы не согласовываете документ</label>
         <textarea type="text" asp-for="Comment" class="form-control" rows="3" style="height: 100px;"></textarea>
     </div>
     <div class="form-group">
-            <input type="submit" value="Не согласовывать" class="btn btn-danger btn-lg" style="margin: 15px 15px 15px">Не согласовывать</input>
+            <input type="submit" value="Не согласовывать" class="btn btn-danger btn-lg" style="margin: 15px 15px 15px"></input>
     </div>
 </div>
 <div class="my-3" style="padding: 1%; float:left; width: 250px">
@@ -54,7 +62,7 @@
          <div class="my-2" style="background-color:rgb(255, 176, 149); padding: 2%">
              <h6>Статус документа</h6>
              <div class="my-2">
-            Не согласован
+            Не согласован <br /> @Model.Term
             </div>
         </div>
     }
@@ -63,7 +71,7 @@
         <div class="my-2" style="background-color:rgb(126, 255, 140)">
              <h6>Статус документа</h6>
              <div class="my-2">
-            Согласован
+            Согласован <br /> @Model.Term
             </div>
         </div>
     }

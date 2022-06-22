@@ -8,9 +8,10 @@
     <div class="mx-auto" style="padding: 3%">
         <h1 class="h3 mb-3 fw-normal">Сотрудники компании</h1>
         <a asp-action="Create"> Добавить пользователя </a>
+        <a href="/Roles/UserList/">     Права доступа </a>
 
         <table class="table">
-            <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th></tr>
+            <tr><th>ФИО</th><th>Должность</th><th>Логин</th><th>Год рождения</th><th>KPI</th></tr>
 
             @foreach (var user in Model)
             {
@@ -19,16 +20,30 @@
                     <td> @user.Position </td>
                     <td> @user.Login </td>
                     <td> @user.Year </td>
+                    <td> @user.KPI %</td>
                     <td>
-                        <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                        @*<form asp-controller="Roles" asp-action="Edit" asp-route-id="@user.Id">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Права
+                            </button>
+                           @* <a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px">Права</a>*@
+                        @*</form>*@
 
-                            <a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                        <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                            <a class="btn btn-sm btn-primary"style="margin: 10px 10px 10px" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                            @*</td>*@
                             @*<a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Сменить пароль</a>*@
+                          @*  <td>*@
+                            @*<a class="btn btn-sm btn-primary" style="margin: 2px 2px 2px" asp-action="EditRole" asp-route-id="@user.Id">Права</a>*@
+                          @*  </td>*@
+                           @* <td>*@
+                            @*<a class="btn btn-sm btn-danger" style="margin: 2px 2px 2px" asp-action="Delete" asp-route-id="@user.Id" method="post">Удалить</a>*@
                             <button type="submit" class="btn btn-sm btn-danger">
                                 Удалить
                             </button>
+                            @*</td>*@
                         </form>
-                    </td>
+                    
                 </tr>
             }
         </table>

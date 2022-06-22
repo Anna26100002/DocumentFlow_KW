@@ -19,7 +19,7 @@
     #main {
         background-color: #f2f2f2;
         padding: 20px;
-        //padding: 3%;
+        padding: 3%;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
         -ms-border-radius: 3px;
@@ -92,6 +92,7 @@
                                         <tr><td class="active">Должность:</td><td>@Model.Position</td></tr>
                                         <tr><td class="active">Год рождения:</td><td>@Model.Year</td></tr>
                                         <tr><td class="active">Логин:</td><td>@Model.Login</td></tr>
+                                        <tr><td class="active">Руководитель</td><td>@Model.Chief</td></tr>
                                     </tbody>
                                 </table>
                                 <a class="btn btn-sm btn-primary" style="margin: 15px 15px 15px" asp-action="Edit" asp-route-id="@Model.Id">Изменить</a>

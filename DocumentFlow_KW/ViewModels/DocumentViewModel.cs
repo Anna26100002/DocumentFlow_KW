@@ -23,7 +23,6 @@ namespace DocumentFlow_KW.ViewModels
 
         public string Executor { get; set; }
         public string FileName { get; set; }
-        public string FilePath { get; set; }
         //public byte[] FileData { get; set; }
         [NotMapped]
         public IFormFile FileData { get; set; }

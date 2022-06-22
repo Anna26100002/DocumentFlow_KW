@@ -26,8 +26,7 @@
             <input type="number" asp-for="Year" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="Year" class="control-label">Руководитель</label>
-            <input type="number" asp-for="Year" class="form-control" />
+            <label asp-for="Chief" class="control-label">Руководитель</label>
             <select asp-for="Chief" class="form-select">
                 @*<option selected>@Model.FioUsers </option>*@
                 <option selected></option>
@@ -45,6 +44,7 @@
                 }
             </select>
         </div>
+
         <div class="form-group">
             <input type="submit" value="Сохранить" class="btn btn-success" />
         </div>

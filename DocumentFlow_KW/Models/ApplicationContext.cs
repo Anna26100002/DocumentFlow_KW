@@ -20,5 +20,6 @@ namespace DocumentFlow_KW.Models
         public DbSet<ViewModels.Document> Documents { get; set; }
         //public DbSet<ViewModels.EveryExecutor> EveryExecutors { get; set; }
         public DbSet<DocumentViewModel> Files { get; set; }
+        public DbSet<KPI> KPI { get; set; }
     }
 }

@@ -25,18 +25,14 @@ namespace DocumentFlow_KW.ViewModels
         public string Priority { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
-        //public string CurrentComment { get; set; }
-        //public Dictionary<string, string> ExecutorsStatus { get; set; }
-        //public Dictionary<string, string> ExecutorsComments { get; set; }
-
-        //public List<string> Executors { get; set; }
         public string Executor { get; set; }
-        //public string FilePath { get; set; }
-        public byte[] FileData { get; set; }
-        //public IFormFile FileData { get; set; }
+        public string? FileName { get; set; }
+        public int? Count { get; set; }
         public string Comment { get; set; }
         public string? TimeCompleted { get; set; }
         public string KPI { get; set; }
+        public string Term { get; set; }
+        public string? UserName { get; set; }
         //public IEnumerable<EveryExecutor> EveryExecutor { get; set; }
     }
 }

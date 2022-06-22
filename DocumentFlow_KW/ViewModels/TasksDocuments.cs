@@ -7,5 +7,7 @@ namespace DocumentFlow_KW.ViewModels
     {
         public IEnumerable<Task> Tasks { get; set; }
         public IEnumerable<Document> Documents { get; set; }
+
+        public KPI Kpi{get; set; }
     }
 }

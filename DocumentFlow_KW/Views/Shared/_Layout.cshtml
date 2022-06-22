@@ -61,23 +61,43 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/Task/Create/">Создать задачу</a>
                         </li>
-                        <li class="dropdown">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-expanded="false">
+                                Все задачи
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown05">
+                              <li><a class="dropdown-item" href="/Task/Incoming/">Входящие</a></li>
+                              <li><a class="dropdown-item" href="/Task/Outgoing/">Исходящие</a></li>
+                              <li><a class="dropdown-item" href="/Task/Employees/">Сотрудников</a></li>
+                            </ul>
+                        </li>
+                        @*<li class="nav-item dropdown">
                             <a class="nav-link" data-toggle="dropdown" href="#">Все задачи</a>
                             <ul class="dropdown-menu">
                              <li><a href="/Task/Incoming/">Входящие</a></li>
                              <li><a href="/Task/Outgoing/">Исходящие</a></li>
                              <li><a href="/Task/Employees/">Сотрудников</a></li>
                             </ul>
-                        </li>
+                        </li>*@
                         <li class="dropdown">
                             <a class="nav-link" href="/Document/Create/">Отправить документ</a>
                         </li>
-                        <li class="dropdown">
-                            <a class="nav-link" data-toggle="dropdown" href="#">Все документы</a>
-                            <ul class="dropdown-menu">
-                             <li><a href="/Document/Incoming/">Входящие</a></li>
-                             <li><a href="/Document/Outgoing/">Исходящие</a></li>
-                             <li><a href="/Document/Employees/">Сотрудников</a></li>
+                        @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown06" data-bs-toggle="dropdown" aria-expanded="false">
+                                Все документы
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown06">
+                              <li><a class="dropdown-item" href="/Document/Incoming/">Входящие</a></li>
+                              <li><a class="dropdown-item" href="/Document/Outgoing/">Исходящие</a></li>
+                              <li><a class="dropdown-item" href="/Document/Employees/">Сотрудников</a></li>
+                            </ul>
+                        </li>*@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown06" aria-expanded="false">Все документы</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown06">
+                             <li><a class="dropdown-item" href="/Document/Incoming/">Входящие</a></li>
+                             <li><a class="dropdown-item" href="/Document/Outgoing/">Исходящие</a></li>
+                             <li><a class="dropdown-item" href="/Document/Employees/">Сотрудников</a></li>
                             </ul>
                         </li>
                      
@@ -89,7 +109,7 @@
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Поиск</button>
                     </form>*@
-                            <div class="input-group ps-5">
+                            @*<div class="input-group ps-5">
                                 <div id="navbar-search-autocomplete" class="form-outline">
                                     <input type="search" id="form1" class="form-control" />
                                     <label class="form-label" for="form1">Поиск</label>
@@ -97,7 +117,7 @@
                               <button type="button" class="btn btn-primary">
                                 <i class="fas fa-search"></i>
                               </button>
-                            </div>
+                            </div>*@
                 </div>
             </div>
         </nav>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using System.IO;
 
 namespace DocumentFlow_KW.Controllers
 {
@@ -29,21 +30,200 @@ namespace DocumentFlow_KW.Controllers
         {
             //получаем id текущего пользователя
             var id = _userManager.GetUserId(User);
-            User user2 = await _userManager.FindByIdAsync(id);
-            if (user2 == null)
+            User user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return RedirectToAction("Start", "Home");
             }
-            var Executor2 = user2.Fio;
-            var Position = user2.Position;
-            var ExecutorPosition = Executor2 + " (" + Position + ")";
+            
+            var Executor = user.Fio;
+            var Position = user.Position;
+            var ExecutorPosition = Executor + " (" + Position + ")";
 
-            var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0}", ExecutorPosition).ToList();
-            var documents = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0}", ExecutorPosition).ToList();
+            //var update = "UPDATE Documents SET Term ='Просрочена' WHERE EndDate < GETDATE()";
+            var notTermDocs = db.Documents.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var docs in notTermDocs)
+            {
+                docs.Term = "Просрочена";
+                db.Documents.Update(docs);
+                db.SaveChanges();
+            }
+            var notTermTasks = db.Tasks.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
+            foreach (var tasts in notTermTasks)
+            {
+                tasts.Term = "Просрочена";
+                db.Tasks.Update(tasts);
+                db.SaveChanges();
+            }
+
+            var kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
+            if (kpi == null)
+            {
+                KPI KPI = new KPI
+                {
+                    user = user.Fio,
+                };
+                db.KPI.Add(KPI);
+                db.SaveChanges();
+            }
+            kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
+            double KPI1 = 0;
+            double KPI2 = 0;
+            double KPI3 = 0;
+            double KPI4 = 0;
+            double KPI5 = 0;
+            double KPI6 = 0;
+            double TasksPriorityInTerm = db.Tasks.Where((p => p.Executor == ExecutorPosition)).Where(r => r.Priority == "Высокий").Where(s => s.Term == "В срок").Count();
+            double TasksPriority = db.Tasks.Where((p => p.Executor == ExecutorPosition)).Where(r => r.Priority == "Высокий").Count();
+            //var KPI1 = TasksPriorityInTerm / TasksPriority *100;
+            
+            if (TasksPriority != 0)
+            {
+                KPI1 = Math.Round((TasksPriorityInTerm / TasksPriority) * 100);
+            }
+            else
+            {
+                KPI1 = 50;
+            }
+
+            double DocumentsPriorityInTerm = db.Documents.Where(p => p.Executor == ExecutorPosition).Where(r => r.Priority == "Высокий").Where(s => s.Term == "В срок").Count();
+            double DocumentsPriority = db.Documents.Where((p => p.Executor == ExecutorPosition)).Where(r => r.Priority == "Высокий").Count();
+            if (DocumentsPriority != 0)
+            {
+                KPI2 = Math.Round((DocumentsPriorityInTerm / DocumentsPriority) * 100);
+            }
+            else
+            {
+                KPI2 = 50;
+            }
+
+            double TasksInTerm = db.Tasks.Where(p => p.Executor == ExecutorPosition).Where(s => s.Term == "В срок").Count();
+            double Tasks = db.Tasks.Where(p => p.Executor == ExecutorPosition).Count();
+            if (Tasks != 0)
+            {
+                KPI3 = Math.Round((TasksInTerm / Tasks) * 100);
+            }
+            else
+            {
+                KPI3 = 50;
+            }
+
+            double DocumentsInTerm = db.Documents.Where(p => p.Executor == ExecutorPosition).Where(s => s.Term == "В срок").Count();
+            double Documents = db.Documents.Where(p => p.Executor == ExecutorPosition).Count();
+            if (Documents != 0)
+            {
+                KPI4 = Math.Round((DocumentsInTerm/Documents) * 100);
+            }
+            else
+            {
+                KPI4 = 50;
+            }
+
+            //double TasksNotTerm = db.Tasks.Where(p => p.Executor == ExecutorPosition).Where(s => s.Term == "Просрочена").Count();
+            double TasksNotTerm = db.Tasks.Where(p => p.Executor == ExecutorPosition).Where(s => s.Completed == true).Count();
+            if (Tasks != 0)
+            {
+                //KPI5 = Math.Round((1 - (TasksNotTerm / Tasks)) * 100);
+                KPI5 = Math.Round((TasksNotTerm / Tasks) * 100);
+            }
+            else
+            {
+                KPI5 = 50;
+            }
+
+            //double DocumentsNotTerm = db.Documents.Where(p => p.Executor == ExecutorPosition).Where(s => s.Term == "Просрочена").Count();
+            double DocumentsNotTerm = db.Documents.Where(p => p.Executor == ExecutorPosition).Where(s => s.Status != "Не согласован").Count();
+            if (Documents != 0)
+            {
+                //KPI6 = Math.Round((1 - (DocumentsNotTerm / Documents)) * 100);
+                KPI6 = Math.Round((DocumentsNotTerm / Documents) * 100);
+            }
+            else
+            {
+                KPI6 = 50;
+            }
+            double KPIgeneral = Math.Round(0.1 * (2.5 * KPI1 + 2.5 * KPI2 + 1.5 * KPI3 + 1.5 * KPI4 + KPI5 + KPI6));
+
+            //var kpi = db.KPI.Where(p => p.user == user.Fio).FirstOrDefault();
+            //var kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
+            //if (kpi == null)
+            //{
+            //    KPI KPI = new KPI
+            //    {
+            //        user = user.Fio,
+            //    };
+            //    db.KPI.Add(KPI);
+            //    db.SaveChanges();
+            //}
+            //kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
+                //KPI kpi = await db.KPI.FindAsync(user.Fio);
+                //KPI kpi = new KPI
+                kpi.TasksPriorityInTerm = Convert.ToInt32(TasksPriorityInTerm);
+                kpi.TasksPriority = Convert.ToInt32(TasksPriority);
+                kpi.KPI1 = KPI1;
+                kpi.DocumentsPriorityInTerm = Convert.ToInt32(DocumentsPriorityInTerm);
+                kpi.DocumentsPriority = Convert.ToInt32(DocumentsPriority);
+                kpi.KPI2 = KPI2;
+                kpi.TasksInTerm = Convert.ToInt32(TasksInTerm);
+                kpi.KPI3 = KPI3;
+                kpi.DocumentsInTerm = Convert.ToInt32(DocumentsInTerm);
+                kpi.KPI4 = KPI4;
+                kpi.TasksNotTerm = Convert.ToInt32(TasksNotTerm);
+                kpi.KPI5 = KPI5;
+                kpi.DocumentsNotTerm = Convert.ToInt32(DocumentsNotTerm);
+                kpi.KPI6 = KPI6;
+                kpi.Tasks = Convert.ToInt32(Tasks);
+                kpi.Documents = Convert.ToInt32(Documents);
+                kpi.KPIgeneral = Convert.ToInt32(KPIgeneral);
+
+                user.KPI = kpi.KPIgeneral;
+                db.Attach(user).State = EntityState.Modified;
+                try
+                {
+                    await db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    if (!db.Users.Any(e => e.Id == user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            //db.KPI.Where(c => c.user == Executor)
+            //db.SaveChanges();
+            //var entity = db.KPI.Attach(kpi);
+            //entity.Entity(kpi).
+            db.Attach(kpi).State = EntityState.Modified;
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                if (!db.KPI.Any(e => e.user == Executor))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            //db.Documents.Update(update);
+
+            var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0} ORDER BY Id DESC", ExecutorPosition).ToList();
+            var documents = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", ExecutorPosition).ToList();
             TasksDocuments tasksDocuments = new TasksDocuments()
             {
                 Tasks = tasks,
                 Documents = documents,
+                Kpi = kpi,
             };
 
             return View(tasksDocuments);
@@ -91,6 +271,11 @@ namespace DocumentFlow_KW.Controllers
                     {
                         //document.KPI = Convert.ToString(TimeSpan.Parse(document.TimeCompleted) - TimeSpan.Parse(Convert.ToString(document.EndDate)));
                         task.KPI = Convert.ToString(doingInterval.Subtract(planInterval));
+                        task.Term = "Просрочена";
+                    }
+                    else
+                    {
+                        task.Term = "В срок";
                     }
                     //document.KPI = document.
 
@@ -122,14 +307,45 @@ namespace DocumentFlow_KW.Controllers
 
         public async Task<IActionResult> DetailsDocumentAsync(int id)
         {
+            //получаем id текущего пользователя
+            var userId = _userManager.GetUserId(User);
+            User user = await _userManager.FindByIdAsync(userId);
+            string userName = user.Fio;
+
             Document document = await db.Documents.FindAsync(id);
+            string numberId = Convert.ToString(id) + "_";
+            string dirName = "C:\\4Kurs_2Sem\\Project\\DocumentFlow_KW\\DocumentFlow_KW\\wwwroot\\Files";
+            document.UserName = userName;
+            if (document.FileName != null)
+            {
+                // если папка существует
+                if (Directory.Exists(dirName) == true)
+                {
+                    //string[] dirs = Directory.GetDirectories(dirName);
+                    string[] files = Directory.GetFiles(dirName);
+                    foreach (string file in files)
+                    {
+                        if (file.Contains(numberId) == true)
+                        {
+                            document.FileName = Path.GetFileName(file).Remove(0, document.Count.Value);
+                        }
+                    }
+                }
+            }
             if (document == null)
             {
                 return NotFound();
             }
             if (document.Status == "Не согласован")
             {
-                return View(document);
+                //if (document.Executor == userName)
+                //{
+                    return View(document);
+                //}
+                //else
+                //{
+                //    return RedirectToAction("DetailsDocument2", "Home", document);
+                //}
             }
             if (document.Status == "Отказано")
             {
@@ -142,7 +358,7 @@ namespace DocumentFlow_KW.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DetailsDocumentAsync(ViewModels.Document model)
+        public IActionResult DetailsDocument(ViewModels.Document model)
         {
             return View(model);
         }
@@ -165,6 +381,11 @@ namespace DocumentFlow_KW.Controllers
                     {
                         //document.KPI = Convert.ToString(TimeSpan.Parse(document.TimeCompleted) - TimeSpan.Parse(Convert.ToString(document.EndDate)));
                         document.KPI = Convert.ToString(doingInterval.Subtract(planInterval));
+                        document.Term = "Просрочен";
+                    }
+                    else
+                    {
+                        document.Term = "В срок";
                     }
                     //document.KPI = document.
 
@@ -186,7 +407,24 @@ namespace DocumentFlow_KW.Controllers
                         }
                     }
                 }
-                //var result = await db.Update(document);
+                string numberId = Convert.ToString(Id) + "_";
+                string dirName = "C:\\4Kurs_2Sem\\Project\\DocumentFlow_KW\\DocumentFlow_KW\\wwwroot\\Files";
+                if (document.FileName != null)
+                {
+                    // если папка существует
+                    if (Directory.Exists(dirName) == true)
+                    {
+                        //string[] dirs = Directory.GetDirectories(dirName);
+                        string[] files = Directory.GetFiles(dirName);
+                        foreach (string file in files)
+                        {
+                            if (file.Contains(numberId) == true)
+                            {
+                                document.FileName = Path.GetFileName(file).Remove(0, document.Count.Value);
+                            }
+                        }
+                    }
+                }
 
             }
             //document.Completed = true;
@@ -197,6 +435,24 @@ namespace DocumentFlow_KW.Controllers
         public async Task<IActionResult> ReasonDeniedDocument(int Id)
         {
             var document = await db.Documents.FindAsync(Id);
+            string numberId = Convert.ToString(Id) + "_";
+            string dirName = "C:\\4Kurs_2Sem\\Project\\DocumentFlow_KW\\DocumentFlow_KW\\wwwroot\\Files";
+            if (document.FileName != null)
+            {
+                // если папка существует
+                if (Directory.Exists(dirName) == true)
+                {
+                    //string[] dirs = Directory.GetDirectories(dirName);
+                    string[] files = Directory.GetFiles(dirName);
+                    foreach (string file in files)
+                    {
+                        if (file.Contains(numberId) == true)
+                        {
+                            document.FileName = Path.GetFileName(file).Remove(0, document.Count.Value);
+                        }
+                    }
+                }
+            }
             if (document != null)
             {
                
@@ -232,6 +488,24 @@ namespace DocumentFlow_KW.Controllers
                         throw;
                     }
                 }
+                string numberId = Convert.ToString(model.Id) + "_";
+                string dirName = "C:\\4Kurs_2Sem\\Project\\DocumentFlow_KW\\DocumentFlow_KW\\wwwroot\\Files";
+                if (document.FileName != null)
+                {
+                    // если папка существует
+                    if (Directory.Exists(dirName) == true)
+                    {
+                        //string[] dirs = Directory.GetDirectories(dirName);
+                        string[] files = Directory.GetFiles(dirName);
+                        foreach (string file in files)
+                        {
+                            if (file.Contains(numberId) == true)
+                            {
+                                document.FileName = Path.GetFileName(file).Remove(0, document.Count.Value);
+                            }
+                        }
+                    }
+                }
                 return RedirectToAction("DeniedDocument", "Home", document);
             }
             else
@@ -260,8 +534,12 @@ namespace DocumentFlow_KW.Controllers
                     {
                         //document.KPI = Convert.ToString(TimeSpan.Parse(document.TimeCompleted) - TimeSpan.Parse(Convert.ToString(document.EndDate)));
                         document.KPI = Convert.ToString(doingInterval.Subtract(planInterval));
+                        document.Term = "Просрочен";
                     }
-                    //document.KPI = document.
+                    else
+                    {
+                        document.Term = "В срок";
+                    }
                     
                     db.Attach(document).State = EntityState.Modified;
                     try
@@ -283,6 +561,24 @@ namespace DocumentFlow_KW.Controllers
                 }
                 //var result = await db.Update(document);
 
+            }
+            string numberId = Convert.ToString(Id) + "_";
+            string dirName = "C:\\4Kurs_2Sem\\Project\\DocumentFlow_KW\\DocumentFlow_KW\\wwwroot\\Files";
+            if (document.FileName != null)
+            {
+                // если папка существует
+                if (Directory.Exists(dirName) == true)
+                {
+                    //string[] dirs = Directory.GetDirectories(dirName);
+                    string[] files = Directory.GetFiles(dirName);
+                    foreach (string file in files)
+                    {
+                        if (file.Contains(numberId) == true)
+                        {
+                            document.FileName = Path.GetFileName(file).Remove(0, document.Count.Value);
+                        }
+                    }
+                }
             }
             //document.Completed = true;
             //return RedirectToAction("Details", document1);

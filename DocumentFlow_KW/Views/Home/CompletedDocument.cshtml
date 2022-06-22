@@ -15,6 +15,14 @@
     <div class="my-2" style="background-color:rgb(216, 219, 255); padding-left:2%">
         @Model.Description
     </div>
+    @if (Model.FileName != null)
+    {
+    <div class="my-2" padding-left:2%"> Прикреплённый файл
+            <a href=@Model.FileName download=@Model.FileName>
+        @Model.FileName
+    </a>
+    </div>
+    }
     </div>
 
     <div class="my-3">
@@ -89,16 +97,16 @@
          <div class="my-2" style="background-color:rgb(255, 176, 149); padding: 2%">
              <h6>Статус документа</h6>
              <div class="my-2">
-            Не согласован
+            Не согласован <br /> @Model.Term
             </div>
         </div>
     }
     else
     {
-        <div class="my-2" style="background-color:rgb(126, 255, 140)">
+        <div class="my-2" style="background-color:rgb(126, 255, 140); padding: 2%">
              <h6>Статус документа</h6>
              <div class="my-2">
-            Согласован
+            Согласован <br />@*@Model.Term*@
             </div>
         </div>
     }

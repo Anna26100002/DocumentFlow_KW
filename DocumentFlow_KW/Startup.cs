@@ -40,6 +40,9 @@ namespace DocumentFlow_KW
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //Сервисы для Entity Framework Core
 
+            //services.AddDbContext<ApplicationContext>(options =>
+            //options.UseSqlServer("Data Source=(localdb)/MSSQLLocalDB; Database=Documentflow; Persist Security Info=false; MultipleActiveResultSets=True; Trusted_Connection=True;"));
+
             //services.AddDbContext<AppDBContent>(options => options.UseSqlServer(_confString.GetConnectionString("DefaultConnection")));
             //services.AddTransient<IUserValidator<User>, CustomUserValidator>(); //Применяем валидатор
 

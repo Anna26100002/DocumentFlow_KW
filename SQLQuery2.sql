@@ -1,0 +1,1 @@
+SELECT * FROM Documents WHERE EndDate < GETDATE()

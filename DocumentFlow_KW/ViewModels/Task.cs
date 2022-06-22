@@ -32,6 +32,9 @@ namespace DocumentFlow_KW.ViewModels
         public bool Completed { get; set; }
         public string? TimeCompleted { get; set; }
         public string KPI { get; set; }
+        public string Term { get; set; }
+        public string? Search { get; set; }
+        public string? UserName { get; set; }
         //public IEnumerable<User> FioUsers { get; set; }
     }
 }
