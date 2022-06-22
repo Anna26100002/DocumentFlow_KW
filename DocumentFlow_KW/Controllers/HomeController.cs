@@ -40,7 +40,6 @@ namespace DocumentFlow_KW.Controllers
             var Position = user.Position;
             var ExecutorPosition = Executor + " (" + Position + ")";
 
-            //var update = "UPDATE Documents SET Term ='Просрочена' WHERE EndDate < GETDATE()";
             var notTermDocs = db.Documents.Where(r => r.TimeCompleted == null).Where(p => p.EndDate < DateTime.Now).ToList();
             foreach (var docs in notTermDocs)
             {
@@ -65,8 +64,8 @@ namespace DocumentFlow_KW.Controllers
                 };
                 db.KPI.Add(KPI);
                 db.SaveChanges();
+                kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
             }
-            kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
             double KPI1 = 0;
             double KPI2 = 0;
             double KPI3 = 0;
@@ -75,7 +74,6 @@ namespace DocumentFlow_KW.Controllers
             double KPI6 = 0;
             double TasksPriorityInTerm = db.Tasks.Where((p => p.Executor == ExecutorPosition)).Where(r => r.Priority == "Высокий").Where(s => s.Term == "В срок").Count();
             double TasksPriority = db.Tasks.Where((p => p.Executor == ExecutorPosition)).Where(r => r.Priority == "Высокий").Count();
-            //var KPI1 = TasksPriorityInTerm / TasksPriority *100;
             
             if (TasksPriority != 0)
             {
@@ -119,11 +117,9 @@ namespace DocumentFlow_KW.Controllers
                 KPI4 = 50;
             }
 
-            //double TasksNotTerm = db.Tasks.Where(p => p.Executor == ExecutorPosition).Where(s => s.Term == "Просрочена").Count();
             double TasksNotTerm = db.Tasks.Where(p => p.Executor == ExecutorPosition).Where(s => s.Completed == true).Count();
             if (Tasks != 0)
             {
-                //KPI5 = Math.Round((1 - (TasksNotTerm / Tasks)) * 100);
                 KPI5 = Math.Round((TasksNotTerm / Tasks) * 100);
             }
             else
@@ -131,11 +127,9 @@ namespace DocumentFlow_KW.Controllers
                 KPI5 = 50;
             }
 
-            //double DocumentsNotTerm = db.Documents.Where(p => p.Executor == ExecutorPosition).Where(s => s.Term == "Просрочена").Count();
             double DocumentsNotTerm = db.Documents.Where(p => p.Executor == ExecutorPosition).Where(s => s.Status != "Не согласован").Count();
             if (Documents != 0)
             {
-                //KPI6 = Math.Round((1 - (DocumentsNotTerm / Documents)) * 100);
                 KPI6 = Math.Round((DocumentsNotTerm / Documents) * 100);
             }
             else
@@ -144,20 +138,6 @@ namespace DocumentFlow_KW.Controllers
             }
             double KPIgeneral = Math.Round(0.1 * (2.5 * KPI1 + 2.5 * KPI2 + 1.5 * KPI3 + 1.5 * KPI4 + KPI5 + KPI6));
 
-            //var kpi = db.KPI.Where(p => p.user == user.Fio).FirstOrDefault();
-            //var kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
-            //if (kpi == null)
-            //{
-            //    KPI KPI = new KPI
-            //    {
-            //        user = user.Fio,
-            //    };
-            //    db.KPI.Add(KPI);
-            //    db.SaveChanges();
-            //}
-            //kpi = db.KPI.FirstOrDefault(i => i.user == user.Fio);
-                //KPI kpi = await db.KPI.FindAsync(user.Fio);
-                //KPI kpi = new KPI
                 kpi.TasksPriorityInTerm = Convert.ToInt32(TasksPriorityInTerm);
                 kpi.TasksPriority = Convert.ToInt32(TasksPriority);
                 kpi.KPI1 = KPI1;
@@ -194,10 +174,7 @@ namespace DocumentFlow_KW.Controllers
                         throw;
                     }
                 }
-            //db.KPI.Where(c => c.user == Executor)
-            //db.SaveChanges();
-            //var entity = db.KPI.Attach(kpi);
-            //entity.Entity(kpi).
+
             db.Attach(kpi).State = EntityState.Modified;
             try
             {
@@ -215,7 +192,6 @@ namespace DocumentFlow_KW.Controllers
                     throw;
                 }
             }
-            //db.Documents.Update(update);
 
             var tasks = db.Tasks.FromSqlRaw("SELECT * FROM Tasks WHERE Executor = {0} ORDER BY Id DESC", ExecutorPosition).ToList();
             var documents = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", ExecutorPosition).ToList();
@@ -265,11 +241,9 @@ namespace DocumentFlow_KW.Controllers
                     TimeSpan planInterval = task.EndDate.Subtract(task.CreationDate);
 
                     task.TimeCompleted = Convert.ToString(doingInterval);
-                    //double minutes = TimeSpan.Parse(document.TimeCompleted).TotalMinutes - TimeSpan.Parse(document.EndDate.ToString("dd.MM.yyyy ")).TotalMinutes;
-                    //if (minutes > 0)
+
                     if (planInterval < doingInterval)
                     {
-                        //document.KPI = Convert.ToString(TimeSpan.Parse(document.TimeCompleted) - TimeSpan.Parse(Convert.ToString(document.EndDate)));
                         task.KPI = Convert.ToString(doingInterval.Subtract(planInterval));
                         task.Term = "Просрочена";
                     }
@@ -277,7 +251,6 @@ namespace DocumentFlow_KW.Controllers
                     {
                         task.Term = "В срок";
                     }
-                    //document.KPI = document.
 
                     db.Attach(task).State = EntityState.Modified;
                     try
@@ -296,12 +269,8 @@ namespace DocumentFlow_KW.Controllers
                             throw;
                         }
                     }
-                }
-                //var result = await db.Update(document);
-                
+                }               
             }                      
-            //document.Completed = true;
-            //return RedirectToAction("Details", document1);
             return View(task);
         }
 
@@ -321,7 +290,6 @@ namespace DocumentFlow_KW.Controllers
                 // если папка существует
                 if (Directory.Exists(dirName) == true)
                 {
-                    //string[] dirs = Directory.GetDirectories(dirName);
                     string[] files = Directory.GetFiles(dirName);
                     foreach (string file in files)
                     {
@@ -338,14 +306,7 @@ namespace DocumentFlow_KW.Controllers
             }
             if (document.Status == "Не согласован")
             {
-                //if (document.Executor == userName)
-                //{
                     return View(document);
-                //}
-                //else
-                //{
-                //    return RedirectToAction("DetailsDocument2", "Home", document);
-                //}
             }
             if (document.Status == "Отказано")
             {
@@ -375,11 +336,8 @@ namespace DocumentFlow_KW.Controllers
                     TimeSpan planInterval = document.EndDate.Subtract(document.CreationDate);
 
                     document.TimeCompleted = Convert.ToString(doingInterval);
-                    //double minutes = TimeSpan.Parse(document.TimeCompleted).TotalMinutes - TimeSpan.Parse(document.EndDate.ToString("dd.MM.yyyy ")).TotalMinutes;
-                    //if (minutes > 0)
                     if (planInterval < doingInterval)
                     {
-                        //document.KPI = Convert.ToString(TimeSpan.Parse(document.TimeCompleted) - TimeSpan.Parse(Convert.ToString(document.EndDate)));
                         document.KPI = Convert.ToString(doingInterval.Subtract(planInterval));
                         document.Term = "Просрочен";
                     }
@@ -387,7 +345,6 @@ namespace DocumentFlow_KW.Controllers
                     {
                         document.Term = "В срок";
                     }
-                    //document.KPI = document.
 
                     db.Attach(document).State = EntityState.Modified;
                     try
@@ -414,7 +371,6 @@ namespace DocumentFlow_KW.Controllers
                     // если папка существует
                     if (Directory.Exists(dirName) == true)
                     {
-                        //string[] dirs = Directory.GetDirectories(dirName);
                         string[] files = Directory.GetFiles(dirName);
                         foreach (string file in files)
                         {
@@ -427,8 +383,6 @@ namespace DocumentFlow_KW.Controllers
                 }
 
             }
-            //document.Completed = true;
-            //return RedirectToAction("Details", document1);
             return View(document);
         }
 
@@ -442,7 +396,6 @@ namespace DocumentFlow_KW.Controllers
                 // если папка существует
                 if (Directory.Exists(dirName) == true)
                 {
-                    //string[] dirs = Directory.GetDirectories(dirName);
                     string[] files = Directory.GetFiles(dirName);
                     foreach (string file in files)
                     {
@@ -495,7 +448,6 @@ namespace DocumentFlow_KW.Controllers
                     // если папка существует
                     if (Directory.Exists(dirName) == true)
                     {
-                        //string[] dirs = Directory.GetDirectories(dirName);
                         string[] files = Directory.GetFiles(dirName);
                         foreach (string file in files)
                         {
@@ -521,18 +473,14 @@ namespace DocumentFlow_KW.Controllers
             if (document != null)
             {
                 document.Status = "Отказано";
-                //document.Comment = Comment;
                 if (document.TimeCompleted == null)
                 {
                     TimeSpan doingInterval = DateTime.Now.Subtract(document.CreationDate);
                     TimeSpan planInterval = document.EndDate.Subtract(document.CreationDate);
 
                     document.TimeCompleted = Convert.ToString(doingInterval);
-                    //double minutes = TimeSpan.Parse(document.TimeCompleted).TotalMinutes - TimeSpan.Parse(document.EndDate.ToString("dd.MM.yyyy ")).TotalMinutes;
-                    //if (minutes > 0)
                     if (planInterval < doingInterval)
                     {
-                        //document.KPI = Convert.ToString(TimeSpan.Parse(document.TimeCompleted) - TimeSpan.Parse(Convert.ToString(document.EndDate)));
                         document.KPI = Convert.ToString(doingInterval.Subtract(planInterval));
                         document.Term = "Просрочен";
                     }
@@ -559,7 +507,6 @@ namespace DocumentFlow_KW.Controllers
                         }
                     }
                 }
-                //var result = await db.Update(document);
 
             }
             string numberId = Convert.ToString(Id) + "_";
@@ -569,7 +516,6 @@ namespace DocumentFlow_KW.Controllers
                 // если папка существует
                 if (Directory.Exists(dirName) == true)
                 {
-                    //string[] dirs = Directory.GetDirectories(dirName);
                     string[] files = Directory.GetFiles(dirName);
                     foreach (string file in files)
                     {
@@ -580,8 +526,6 @@ namespace DocumentFlow_KW.Controllers
                     }
                 }
             }
-            //document.Completed = true;
-            //return RedirectToAction("Details", document1);
             return View(document);
         }
         public IActionResult Start()
