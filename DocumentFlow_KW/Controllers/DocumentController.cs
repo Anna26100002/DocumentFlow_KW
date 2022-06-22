@@ -42,21 +42,6 @@ namespace DocumentFlow_KW.Controllers
             return View();
         }
 
-        //public JsonResult Upload()
-        //{
-        //    for (int i = 0; i < Request.Files.Count; i++)
-        //    {
-        //        HttpPostedFileBase file = Request.Files[i]; //Uploaded file
-        //                                                    //Use the following properties to get file name, size and MIMEType
-        //        int fileSize = file.ContentLength;
-        //        string fileName = file.FileName;
-        //        string mimeType = file.ContentType;
-        //        System.IO.Stream fileContent = file.InputStream;
-        //        //To save file, use SaveAs method
-        //        file.SaveAs(Server.MapPath("~/") + fileName); //File will be saved in application root
-        //    }
-        //    return Json("Uploaded " + Request.Files.Count + " files");
-        //}
         [HttpPost]
         public IActionResult UploadFiles(IFormFile file)
         {
@@ -83,7 +68,6 @@ namespace DocumentFlow_KW.Controllers
                 db.Documents.Update(docs);
                 db.SaveChanges();
             }
-            //var document = db.Documents.Single(xx => xx.Id == model.Id);
             return View(model);
         }
         // GET: DocumentController/Create
@@ -120,18 +104,14 @@ namespace DocumentFlow_KW.Controllers
             var Fio = user.Fio;
             var Position = user.Position;
             var FioPosition = Fio + " (" + Position + ")";
-            //Dictionary<string, string> ExecutorsStatus = new Dictionary<string, string>();
             Document document = new Document()
             {
                 Id = model.DocumentViewModel.Id,
                 Topic = model.DocumentViewModel.Topic,
                 CreationDate = Convert.ToDateTime(DateTime.Now.ToString("dd MM yyyy HH:mm")),
                 EndDate = Convert.ToDateTime(model.DocumentViewModel.EndDate.ToString("dd MM yyyy HH:mm")),
-                //User = user,
-                //Fio = user.Fio,
                 Fio = FioPosition,
                 Executor = model.DocumentViewModel.Executor,
-                //FileData = model.DocumentViewModel.FileData,
                 Priority = model.DocumentViewModel.Priority,
                 Description = model.DocumentViewModel.Description,
                 Status = "Не согласован",
@@ -160,36 +140,6 @@ namespace DocumentFlow_KW.Controllers
                 db.Documents.Update(document);
                 db.SaveChanges();
             }
-            //ViewBag.Message = $"{files.Count} file(s) / 
-            //          { size}
-            //bytes uploaded successfully!";
-            //if (model.DocumentViewModel.FileData != null)
-            //{
-            //    byte[] dat = null;
-            //    //считываем переданный файл в массив байтов
-            //    using (BinaryReader binaryReader = new BinaryReader(model.DocumentViewModel.FileData.OpenReadStream()))
-            //    {
-            //        dat = binaryReader.ReadBytes((int)model.DocumentViewModel.FileData.Length);
-            //    }
-            //    //установка массива байтов
-            //    document.FileData = dat;
-            //    document.Type = "Ok";
-            //}
-
-            //IFormFile uploadedFile = model.DocumentViewModel.FileData;
-            //if (model.DocumentViewModel.FileData != null)
-            //{
-            //    string path = "/Files/" + model.DocumentViewModel.FileData.FileName;
-            //    //сохраняем файл в папку Files в каталоге wwwroot
-            //    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-            //    {
-            //        await uploadedFile.CopyToAsync(fileStream);
-            //    }
-            //    DocumentViewModel file = new DocumentViewModel { FileName = uploadedFile.FileName, FilePath = path };
-            //    db.Files.Add(file);
-            //    db.SaveChanges();
-            //}
-
 
             return RedirectToAction("Success", "Document", document);
         }
@@ -247,7 +197,6 @@ namespace DocumentFlow_KW.Controllers
                 db.Documents.Update(docs);
                 db.SaveChanges();
             }
-            //var documents = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", ExecutorPosition).ToList();
 
             DocumentsViewModel documentsView = new DocumentsViewModel
             {
@@ -282,8 +231,6 @@ namespace DocumentFlow_KW.Controllers
             documentsView.Search = "";
             documentsView.Search2 = "";
             return View(documentsView);
-
-            //var selectedDocument = db.Documents.Where(t => t.Topic.ToLower().Contains(documentsView.Search)).Where(c => c.Executor == ExecutorPosition).OrderByDescending(Id => Id.Id).ToList();
         }
 
         [HttpGet]
@@ -340,7 +287,6 @@ namespace DocumentFlow_KW.Controllers
                 db.SaveChanges();
             }
 
-            //var documents = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Fio = {0} ORDER BY Id DESC", AuthorPosition).ToList();
             DocumentsViewModel documentsView = new DocumentsViewModel
             {
                 //Documents = model.Documents,
@@ -374,8 +320,6 @@ namespace DocumentFlow_KW.Controllers
             documentsView.Search = "";
             documentsView.Search2 = "";
             return View(documentsView);
-            //var selectedDocument = db.Documents.Where(t => t.Topic.ToLower().Contains(documentsView.Search)).Where(c => c.Fio == AuthorPosition).OrderByDescending(Id => Id.Id).ToList();
-
         }
 
         [HttpGet]
@@ -460,7 +404,6 @@ namespace DocumentFlow_KW.Controllers
                     var Position2 = employee.Position;
                     var FioPosition2 = Fio + " (" + Position2 + ")";
 
-                    //var selectedDocument = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", FioPosition2).ToList();
                     selectedDocument = db.Documents.Where(t => t.Topic.ToLower().Contains(documentsView.Search)).Where(t => t.Executor.ToLower().Contains(documentsView.Search2)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
                     selectedDocuments.AddRange(selectedDocument);
                 }
@@ -474,7 +417,6 @@ namespace DocumentFlow_KW.Controllers
                     var Position2 = employee.Position;
                     var FioPosition2 = Fio + " (" + Position2 + ")";
 
-                    //var selectedDocument = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", FioPosition2).ToList();
                     selectedDocument = db.Documents.Where(t => t.Topic.ToLower().Contains(documentsView.Search)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
                     selectedDocuments.AddRange(selectedDocument);
                 }
@@ -488,7 +430,6 @@ namespace DocumentFlow_KW.Controllers
                     var Position2 = employee.Position;
                     var FioPosition2 = Fio + " (" + Position2 + ")";
 
-                    //var selectedDocument = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", FioPosition2).ToList();
                     selectedDocument = db.Documents.Where(t => t.Executor.ToLower().Contains(documentsView.Search2)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
                     selectedDocuments.AddRange(selectedDocument);
                 }
@@ -498,16 +439,6 @@ namespace DocumentFlow_KW.Controllers
                 return RedirectToAction("Employees", "Document");
             }
 
-            //foreach (var employee in employees)
-            //{
-            //    var Fio = employee.Fio;
-            //    var Position2 = employee.Position;
-            //    var FioPosition2 = Fio + " (" + Position2 + ")";
-
-            //    //var selectedDocument = db.Documents.FromSqlRaw("SELECT * FROM Documents WHERE Executor = {0} ORDER BY Id DESC", FioPosition2).ToList();
-            //    var selectedDocument = db.Documents.Where(t => t.Topic.ToLower().Contains(documentsView.Search)).Where(c => c.Executor == FioPosition2).OrderByDescending(Id => Id.Id).ToList();
-            //    selectedDocuments.AddRange(selectedDocument);
-            //}
             documentsView.Documents = selectedDocuments;
             documentsView.Search = "";
             documentsView.Search2 = "";
